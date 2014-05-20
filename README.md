@@ -13,4 +13,4 @@ Different types of players are implemented :
 	- type CLIENT
 	- type IA
 When you want to play, (after using the Makefile), juste try :
-	- ./connect4.x [player1] [player2]
+	- ./connect4.x <player1> <player2>
