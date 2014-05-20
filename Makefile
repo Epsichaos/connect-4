@@ -4,10 +4,10 @@ LDFLAGS =
  
  SRC = $(wildcard *.c)
 OBJS = $(SRC:.c=.o)
-	AOUT = puissance4.x
+	AOUT = connect4.x
 	 
 all :	$(AOUT) clean 
-puissance4.x : $(OBJS)
+connect4.x : $(OBJS)
 		$(CC) $(LDFLAGS) -o $@ $^
 %.o : %.c
 		$(CC) $(CFLAGS) -o $@ -c $<
