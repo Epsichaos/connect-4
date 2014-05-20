@@ -10,10 +10,10 @@ Play
 
 Different types of players are implemented : 
 
-	* type KEYBOARD
-	* type SERVER
-	* type CLIENT
-	* type IA
+* type KEYBOARD
+* type SERVER
+* type CLIENT
+* type IA
 
 When you want to play, (after using the Makefile), juste try : ./connect4.x [player1] [player2], where [player] is :
 
