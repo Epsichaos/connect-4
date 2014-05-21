@@ -22,15 +22,14 @@ token play(player, player) ;
 player create_keyboard(token) ;
 player create_client(token, char*, int) ;
 player create_server(token, int) ;
-player create_ia(token,depth) ; // Cours de DEV
+player create_ia(token,depth) ;
 
 
 int input(grid, player) ;
 void output(player, int) ;
 
-//player* detect(int, char**) ; //en cours de dev, mais semble terminée ON NE DOIT PAS RENVOYER DE PLAYER -> SINON MEMORY LOST
 void detect(int,char**,player*) ;
-void deconnexion(player, player) ; //en cours de dev, mais semble terminée
+void deconnexion(player, player) ;
 
 int pond(grid) ; // EN COURS DE DEV POUR L'ALPHA BETA
 int alphabeta(grid, int, int, int, token) ; // EN COURS DE DEV POUR L'ALPHA BETA

@@ -74,7 +74,6 @@ int where_play(grid g,int depth,token t) {
 			if(tmp==BestMove) { /* En cas d'égalité, on stocke à la suite dans un tableau, en vu de décider du choix aléatoirement */
 				buf[j]=i ;
 				j = j+1 ;
-				printf("tmp = %d et buf[%d]=%d \n",tmp,j,i) ;
 			}
 			if(tmp<BestMove) { /* Si une valeur renvoyée est > BestMove, alors on remet les indices à 0, et on écrase le tableau */
 				j=0 ;
