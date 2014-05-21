@@ -47,27 +47,40 @@ grid create_grid() {
 *\param g grille (\a grid) que l'on souhaite afficher
 */
 void print_grid(grid g) {
+    couleur("36") ;
     printf(" 1  2  3  4  5  6  7 \n");
-    printf(" _  _  _  _  _  _  _ \n");  
+    couleur("0") ;  
     int i ;
     int j ;
     for(i=0;i<LINE_NB;i++) {
         for(j=0;j<COLUMN_NB;j++) { /* On parcourt toute la grille, et selon ce que contiennent les cases, on affiche " ", "x" ou "o" */
+            couleur("36") ;
             printf("|") ;
+            couleur("0") ;
             if(g->table[i][j]==NOTHING) {
-                printf(" ") ;
+                couleur("37") ;
+                printf(".") ;
+                couleur("0") ;
             }
             if(g->table[i][j]==RED) {
-                printf("x");
+                couleur("31") ;
+                printf("x") ;
+                couleur("0") ;
             }   
             if(g->table[i][j]==YELLOW){
+                couleur("33") ;
                 printf("o");
+                couleur("0") ;
             }  
+            couleur("36") ;
             printf("|");
+            couleur("0") ;
         }   
        printf("\n");
     }
+    couleur("36") ;
     printf(" _  _  _  _  _  _  _ \n");
+    couleur("0") ;
     printf("\n");
 } 
 /**

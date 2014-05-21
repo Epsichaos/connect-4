@@ -10,8 +10,12 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
+#include<stdio.h>
 #include"client-lib.h"
 #include"server-lib.h"
+
+#define clrscr() printf("\033[H\033[2J") // fonction qui efface l'écran
+#define couleur(param) printf("\033[%sm",param)
 
 /** Macro définissant le nombre de colonnes de la grille */
 #define COLUMN_NB 7 
