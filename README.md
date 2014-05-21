@@ -24,11 +24,16 @@ When you want to play, (after using the Makefile), juste try : ./connect4.x [pla
 * '-ia -depth' if the type is IA.
 
 Exemples : 
+-------------
 
 	./connect4.x -keyboard -keyboard
 	./connect4.x -keyboard -server -host_port
 	./connect4.x -client -host_name -host_port -keyboard
 	./connect4.x -keyboard -ia -ia_depth
+
+If you want any information on how to use the .x created, just run :
+
+	./connect4.x --help
 
 
 Issues
