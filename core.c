@@ -11,7 +11,7 @@ déterminer la victoire, ...etc.
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h> /* Pour strcmp */
-#include<ctype.h> /* Pour ifdigit */
+#include<ctype.h> /* Pour isdigit */
 #include"fonctions.h"
 #include"struct.h"
 
@@ -371,9 +371,13 @@ player* detect(int argc, char *argv[]) {
     }
     int nb_joueurs = 0 ;
     for(i=1; i<argc;i++) {
-        if(strcmp(argv[i],"-ia")==0) {
-            nb_joueurs = nb_joueurs + 1 ;
-            if(isdigit(argv[i+1][0])!=0&&argv[i+1][0]!='0') {
+        if(strcmp(argv[i],"-ia")==0) { /* Si on détecte l'IA, on crée un joueur de type IA avec la fonction correspondante */
+            nb_joueurs = nb_joueurs + 1 ; /* On incrémente le nombre de joueurs */
+            if(i==argc-1) { /* Condition pour gérer le cas où on ne met rien après l'IA */
+                printf("Erreur, il manque la profondeur de l'IA\n") ; 
+                exit(EXIT_FAILURE) ;
+            }
+            else if(isdigit(argv[i+1][0])!=0&&argv[i+1][0]!='0') { /* Permet de vérifier si le paramètre entré après -ia est correct */
                 if(argv[i+1][1]!='\0'&&isdigit(argv[i+1][1])!=0&&argv[i+1][2]=='\0') {
                 joueurs[nb_joueurs] = create_ia(NOTHING,atoi(argv[i+1])) ;
                 }
@@ -387,17 +391,21 @@ player* detect(int argc, char *argv[]) {
             }
         }
         if(strcmp(argv[i],"-keyboard")==0) {
-            nb_joueurs = nb_joueurs + 1 ;
+            nb_joueurs = nb_joueurs + 1 ; /* On incrémente le nombre de joueurs */
             joueurs[nb_joueurs] = create_keyboard(NOTHING) ;
         }
         if(strcmp(argv[i],"-client")==0) {
-            nb_joueurs = nb_joueurs + 1 ;
+            nb_joueurs = nb_joueurs + 1 ; /* On incrémente le nombre de joueurs */
             joueurs[nb_joueurs] = create_client(NOTHING,argv[i+1],atoi(argv[i+2])) ;
         }
         if(strcmp(argv[i],"-server")==0) {
-            nb_joueurs = nb_joueurs + 1 ;
+            nb_joueurs = nb_joueurs + 1 ; /* On incrémente le nombre de joueurs */
             joueurs[nb_joueurs] =create_server(NOTHING, atoi(argv[i+1])) ;
         }   
+    }
+    if(nb_joueurs!=2) {
+        printf("Erreur dans le nombre de joueur (ou leur synthaxe) passés en ligne de commande\n") ;
+        exit(EXIT_FAILURE) ;
     }
     return(joueurs) ;
 }
