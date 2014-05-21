@@ -35,4 +35,6 @@ int pond(grid) ; // EN COURS DE DEV POUR L'ALPHA BETA
 int alphabeta(grid, int, int, int, token) ; // EN COURS DE DEV POUR L'ALPHA BETA
 int where_play(grid ,int ,token) ; // EN COURS DE DEV
 
+void help(void) ;
+
 #endif

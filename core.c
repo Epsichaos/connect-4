@@ -369,6 +369,10 @@ void deconnexion(player p1, player p2) {
 void detect(int argc, char *argv[],player* joueurs) {
     int nb_joueurs = 0 ;
     int i ;
+    if(strcmp(argv[1],"--help")==0) {
+        help() ;
+        exit(EXIT_SUCCESS) ;
+    }
     for(i=1; i<argc;i++) {
         if(strcmp(argv[i],"-ia")==0) { // Si on détecte l'IA, on crée un joueur de type IA avec la fonction correspondante 
             nb_joueurs = nb_joueurs + 1 ; // On incrémente le nombre de joueurs 
@@ -406,4 +410,45 @@ void detect(int argc, char *argv[],player* joueurs) {
         printf("Erreur dans le nombre de joueur (ou leur synthaxe) passés en ligne de commande\n") ;
         exit(EXIT_FAILURE) ;
     }
+}
+
+void help(void) {
+    printf("\n") ;
+    couleur("31") ;
+    printf("      ------------------------------------------\n") ;
+    printf("      |     -------   Connect-4   -------      |\n") ;
+    printf("      |       -- A game by Epsichaos --        |\n") ;
+    printf("      ------------------------------------------\n") ;
+    printf("\n") ;
+    couleur("0") ;
+    couleur("36") ;
+    printf("     To play 1 VS 1 on the same computer, run :\n") ;
+    couleur("0") ;
+    couleur("33") ;
+    printf("          ./connect4.x -keyboard -keyboard\n\n") ;
+    couleur("0") ;
+    couleur("36") ;
+    printf("     To play as player 1 and launch a server, run :\n") ;
+    couleur("0") ;
+    couleur("33") ;
+    printf("          ./connect4.x -keyboard -server -host_port\n\n") ;
+    couleur("0") ;
+    couleur("36") ;
+    printf("     To play as player 2 and launch a server, run :\n") ;
+    couleur("0") ;
+    couleur("33") ;
+    printf("          ./connect4.x -server -host_port -keyboard\n\n") ;
+    couleur("0") ;
+    couleur("36") ;
+    printf("     To play as player 1 and connect to a server as a client, run :\n") ;
+    couleur("0") ;
+    couleur("33") ;
+    printf("          ./connect4.x -keyboard -client -host_name -host_port\n\n") ;
+    couleur("0") ;
+    couleur("36") ;
+    printf("     If you want an IA to play, just replace '-keyboard' by '-ia -ia_depth', for example :\n") ;
+    couleur("0") ;
+    couleur("33") ;
+    printf("          ./connect4.x -keyboard -ia 8\n\n") ;
+    couleur("0") ;
 }

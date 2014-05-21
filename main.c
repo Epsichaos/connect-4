@@ -16,6 +16,10 @@ int main(int argc, char *argv[]) {
 		printf("Erreur d'allocation !\n");
 		exit(EXIT_FAILURE) ;
 	}
+    if(argc==1) {
+        printf("Error in parameters, if you need help please run ./connect4.x --help\n") ;
+        exit(EXIT_FAILURE) ;
+    }
 	detect(argc,argv,joueurs) ; 
 	player joueur1=joueurs[1] ;
 	player joueur2=joueurs[2] ;
