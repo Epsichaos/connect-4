@@ -59,6 +59,7 @@ token play(player p1, player p2) {
 		        }		        
 	        }
 	    }
+	    free(g) ;
 	    return(token_winner) ;
 	}
 	if(p1->player_kind==SERVER) {
@@ -115,6 +116,7 @@ token play(player p1, player p2) {
 		        }		        
 	        }
 	    }
+	    free(g) ;
 	    return(token_winner) ;
 	}
 	if(p1->player_kind==CLIENT) {
@@ -171,6 +173,7 @@ token play(player p1, player p2) {
 		        }		        
 	        }
 	    }
+	    free(g) ;
 	    return(token_winner) ;
 	}
 	if(p1->player_kind==IA) {
@@ -227,6 +230,7 @@ token play(player p1, player p2) {
 		        }		        
 	        }
 	    }
+	    free(g) ;
 	    return(token_winner) ;
 	}
 	else {

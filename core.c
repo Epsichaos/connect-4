@@ -23,7 +23,11 @@ déterminer la victoire, ...etc.
 *\details Cette fonction permet au main, ou a posteriori à la fonction play{} de créer une grille de jeu
 */
 grid create_grid() {
-    grid grille=malloc(sizeof(grid)); /* On crée une grille, de type grid, et pour éviter une erreur de segmentation, on utilise malloc */
+    grid grille=malloc(sizeof(grid_content)); /* On crée une grille, de type grid, et pour éviter une erreur de segmentation, on utilise malloc */
+    if(grille==NULL) {
+        printf("Erreur d'allocation dans create_grid\n") ;
+        exit(EXIT_FAILURE) ;
+    }
     int i ;
     int j ;
     for(i=0;i<LINE_NB;i++) {
@@ -361,23 +365,23 @@ void deconnexion(player p1, player p2) {
         printf("Serveur déconnecté\n") ;
     }
 }
-
+/*
 player* detect(int argc, char *argv[]) {
     int i;
     player* joueurs=malloc(2*sizeof(player)) ;
     if(joueurs==NULL) {
-        printf("Erreur d'allocation\n") ;
+        printf("Erreur d'allocation dans detect\n") ;
         exit(EXIT_FAILURE) ;
     }
     int nb_joueurs = 0 ;
     for(i=1; i<argc;i++) {
-        if(strcmp(argv[i],"-ia")==0) { /* Si on détecte l'IA, on crée un joueur de type IA avec la fonction correspondante */
-            nb_joueurs = nb_joueurs + 1 ; /* On incrémente le nombre de joueurs */
-            if(i==argc-1) { /* Condition pour gérer le cas où on ne met rien après l'IA */
+        if(strcmp(argv[i],"-ia")==0) { // Si on détecte l'IA, on crée un joueur de type IA avec la fonction correspondante 
+            nb_joueurs = nb_joueurs + 1 ; // On incrémente le nombre de joueurs 
+            if(i==argc-1) { // Condition pour gérer le cas où on ne met rien après l'IA 
                 printf("Erreur, il manque la profondeur de l'IA\n") ; 
                 exit(EXIT_FAILURE) ;
             }
-            else if(isdigit(argv[i+1][0])!=0&&argv[i+1][0]!='0') { /* Permet de vérifier si le paramètre entré après -ia est correct */
+            else if(isdigit(argv[i+1][0])!=0&&argv[i+1][0]!='0') { // Permet de vérifier si le paramètre entré après -ia est correct 
                 if(argv[i+1][1]!='\0'&&isdigit(argv[i+1][1])!=0&&argv[i+1][2]=='\0') {
                 joueurs[nb_joueurs] = create_ia(NOTHING,atoi(argv[i+1])) ;
                 }
@@ -391,15 +395,15 @@ player* detect(int argc, char *argv[]) {
             }
         }
         if(strcmp(argv[i],"-keyboard")==0) {
-            nb_joueurs = nb_joueurs + 1 ; /* On incrémente le nombre de joueurs */
+            nb_joueurs = nb_joueurs + 1 ; // On incrémente le nombre de joueurs
             joueurs[nb_joueurs] = create_keyboard(NOTHING) ;
         }
         if(strcmp(argv[i],"-client")==0) {
-            nb_joueurs = nb_joueurs + 1 ; /* On incrémente le nombre de joueurs */
+            nb_joueurs = nb_joueurs + 1 ; 
             joueurs[nb_joueurs] = create_client(NOTHING,argv[i+1],atoi(argv[i+2])) ;
         }
         if(strcmp(argv[i],"-server")==0) {
-            nb_joueurs = nb_joueurs + 1 ; /* On incrémente le nombre de joueurs */
+            nb_joueurs = nb_joueurs + 1 ; 
             joueurs[nb_joueurs] =create_server(NOTHING, atoi(argv[i+1])) ;
         }   
     }
@@ -408,4 +412,43 @@ player* detect(int argc, char *argv[]) {
         exit(EXIT_FAILURE) ;
     }
     return(joueurs) ;
+}
+*/
+
+void detect(int argc, char *argv[],player* joueurs) {
+    int nb_joueurs = 0 ;
+    int i ;
+    for(i=1; i<argc;i++) {
+        if(strcmp(argv[i],"-ia")==0) { // Si on détecte l'IA, on crée un joueur de type IA avec la fonction correspondante 
+            nb_joueurs = nb_joueurs + 1 ; // On incrémente le nombre de joueurs 
+            if(isdigit(argv[i+1][0])!=0&&argv[i+1][0]!='0') { // Permet de vérifier si le paramètre entré après -ia est correct 
+                if(argv[i+1][1]!='\0'&&isdigit(argv[i+1][1])!=0&&argv[i+1][2]=='\0') {
+                joueurs[nb_joueurs] = create_ia(NOTHING,atoi(argv[i+1])) ;
+                }
+                else{
+                    joueurs[nb_joueurs] = create_ia(NOTHING,atoi(argv[i+1])) ;
+                }
+            }
+            else {
+                printf("Erreur, le caractère entré après l'IA n'est pas un chiffre, ou est un chiffre > 99 ou < 1\n") ;
+                exit(EXIT_FAILURE) ;
+            }
+        }
+        if(strcmp(argv[i],"-keyboard")==0) {
+            nb_joueurs = nb_joueurs + 1 ; // On incrémente le nombre de joueurs
+            joueurs[nb_joueurs] = create_keyboard(NOTHING) ;
+        }
+        if(strcmp(argv[i],"-client")==0) {
+            nb_joueurs = nb_joueurs + 1 ; 
+            joueurs[nb_joueurs] = create_client(NOTHING,argv[i+1],atoi(argv[i+2])) ;
+        }
+        if(strcmp(argv[i],"-server")==0) {
+            nb_joueurs = nb_joueurs + 1 ; 
+            joueurs[nb_joueurs] =create_server(NOTHING, atoi(argv[i+1])) ;
+        }   
+    }
+    if(nb_joueurs!=2) {
+        printf("Erreur dans le nombre de joueur (ou leur synthaxe) passés en ligne de commande\n") ;
+        exit(EXIT_FAILURE) ;
+    }
 }

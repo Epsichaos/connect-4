@@ -28,7 +28,8 @@ player create_ia(token,depth) ; // Cours de DEV
 int input(grid, player) ;
 void output(player, int) ;
 
-player* detect(int, char**) ; //en cours de dev, mais semble terminée
+//player* detect(int, char**) ; //en cours de dev, mais semble terminée ON NE DOIT PAS RENVOYER DE PLAYER -> SINON MEMORY LOST
+void detect(int,char**,player*) ;
 void deconnexion(player, player) ; //en cours de dev, mais semble terminée
 
 int pond(grid) ; // EN COURS DE DEV POUR L'ALPHA BETA

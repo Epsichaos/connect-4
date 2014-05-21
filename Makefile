@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall
-LDFLAGS = 
+LDFLAGS =  
  
  SRC = $(wildcard *.c)
 OBJS = $(SRC:.c=.o)
@@ -10,7 +10,7 @@ all :	$(AOUT) clean
 connect4.x : $(OBJS)
 		$(CC) $(LDFLAGS) -o $@ $^
 %.o : %.c
-		$(CC) $(CFLAGS) -o $@ -c $<
+		$(CC) $(CFLAGS) -o $@ -c $< -g
 clean :
 		@rm *.o
 cleaner : clean

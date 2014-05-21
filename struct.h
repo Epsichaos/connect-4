@@ -79,6 +79,6 @@ typedef struct {
 		keyboard player_keyboard ;
 		depth player_ia ;
 	} player_data ; /** Cette union nous permet de choisir le type du joueur et donc les caractériques à savoir pour le définir correctement */
-} *player ;
+} player_type,*player ;
 
 #endif 

@@ -23,11 +23,11 @@
 *\return Objet de type player, définit dans struct.h
 */
 player create_keyboard(token t) {
-	player player_key=malloc(sizeof(player)) ; /* On créé le joueur */
+	player player_key=malloc(sizeof(player_type)) ; // On créé le joueur 
 	if(player_key==NULL) {
 		printf("Erreur d'allocation !\n") ;
 		exit(EXIT_FAILURE) ;
-	}
+	} 
 	player_key->player_kind=KEYBOARD ; /* On initialise le joueur de type player pour que tout corresponde à un type de jeu clavier */
 	player_key->player_token = t ;
 	player_key->player_data.player_keyboard = 1 ;

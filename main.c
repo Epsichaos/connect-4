@@ -11,14 +11,15 @@
 
 int main(int argc, char *argv[]) { 	
 	int token_winner ;
-	player *joueurs=malloc(2*sizeof(player)) ;
+	player *joueurs=malloc(2*sizeof(player_type)) ;
 	if(joueurs == NULL) { 
 		printf("Erreur d'allocation !\n");
 		exit(EXIT_FAILURE) ;
 	}
-	joueurs=detect(argc,argv) ; 
+	detect(argc,argv,joueurs) ; 
 	player joueur1=joueurs[1] ;
 	player joueur2=joueurs[2] ;
+	free(joueurs);
 	joueur1->player_token=RED ;
 	joueur2->player_token=YELLOW ;
 	token_winner = play(joueur1,joueur2) ; 
@@ -29,6 +30,7 @@ int main(int argc, char *argv[]) {
 		printf("Match Nul : Personne n'a gagné !\n") ;
 	}
 	deconnexion(joueur1,joueur2) ; 
-	free(joueurs);
+	free(joueur1) ;
+	free(joueur2) ;
 	return(0) ;
 }
