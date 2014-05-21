@@ -25,15 +25,15 @@ When you want to play, (after using the Makefile), juste try : ./connect4.x [pla
 
 Exemples : 
 
-* 1 VS 1 on the same computer : 
+1 VS 1 on the same computer : 
 	./connect4.x -keyboard -keyboard,
-* launch a server (and play as player 1) : 
+launch a server (and play as player 1) : 
 	./connect4.x -keyboard -server -port_number,
-* launch a client (and play as player 2) : 
+launch a client (and play as player 2) : 
 	./connect4.x -client -hostname -hostport -keyboard,
-* play against an IA : 
+play against an IA : 
 	./connect4.x -keyboard -ia 5,
-* ...
+...
 
 Issues
 -------------
