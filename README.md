@@ -3,8 +3,8 @@ Connect 4 in C
 Project
 ---------------
 
-Implementation of the game "Connect 4" in C, where players can play on a same computer (keyboard/keyboard), or on differente ones (server/client). An IA (alpha/
-beta algorithm) is also implemented.
+Implementation of the game "Connect 4" in C, where players can play on a same computer (keyboard/keyboard), or 
+on differente ones (server/client). An IA (alpha/beta algorithm) is also implemented.
 
 Play
 --------------
@@ -16,7 +16,8 @@ Different types of players are implemented :
 * type CLIENT
 * type IA
 
-When you want to play, (after using the Makefile), juste try : ./connect4.x [player1] [player2], where [player] is :
+When you want to play, (after using the Makefile), juste try : ./connect4.x [player1] [player2], 
+where [player] is :
 
 * '-keyboard' if the type is KEYBOARD,
 * '-client -hostname -hostport' if the type is CLIENT,
@@ -39,4 +40,5 @@ If you want any information on how to use the .x created, just run :
 Issues
 -------------
 
-Until now, the IA isn't really efficient, as the heuristic remains really basic. You can find IA's dependancies in the file pond.c
+Until now, the IA isn't really efficient, as the heuristic remains really basic. 
+You can find IA's dependancies in the file pond.c
