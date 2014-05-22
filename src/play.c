@@ -16,11 +16,13 @@ token play(player p1, player p2) {
 	    	int a ;
 			a = input(g,p1) ;
 			while(a<1||a>7) {
+				print_grid(g) ;
 				printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
 				a = input(g,p1) ;
 			}
        		if(a>0&&a<8) {
             	while(g->heights[a-1]==6) {
+            		print_grid(g) ;
                 	printf("Colonne pleine, choisissez en une autre !\n");
                 	a = input(g,p1) ;
             	}
@@ -40,11 +42,13 @@ token play(player p1, player p2) {
 		        b = input(g,p2) ; /* Vérification de saisie ci dessous*/
 		        //b = where_play(g,1,p2->player_token) ;
 		        while(b<1||b>7) {
+		        	print_grid(g) ;
 		        	printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
 		        	b = input(g,p2) ;
 		        }
 	       		if(b>0&&b<8) {
 	            	while(g->heights[b-1]==6) {
+	            		print_grid(g) ;
 	                	printf("Colonne pleine, choisissez en une autre !\n");
 	                	b = input(g,p2) ;
 	            	}
@@ -74,11 +78,13 @@ token play(player p1, player p2) {
 	    	int a ;
 			a = input(g,p1) ; //ne pas oublier la vérif
 			while(a<1||a>7) {
+				print_grid(g) ;
 				printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
 				a = input(g,p1) ;
 			}
        		if(a>0&&a<8) {
             	while(g->heights[a-1]==6) {
+            		print_grid(g) ;
                 	printf("Colonne pleine, choisissez en une autre !\n");
                 	a = input(g,p1) ;
             	}
@@ -97,11 +103,13 @@ token play(player p1, player p2) {
 		        int b;
 		        b = input(g,p2) ;
 		        while(b<1||b>7) {
+		        	print_grid(g) ;
 		        	printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
 		        	b = input(g,p2) ;
 		        }
 	       		if(b>0&&b<8) {
 	            	while(g->heights[b-1]==6) {
+	            		print_grid(g) ;
 	                	printf("Colonne pleine, choisissez en une autre !\n");
 	                	b = input(g,p2) ;
 	            	}
@@ -131,11 +139,13 @@ token play(player p1, player p2) {
 	    	int a ;
 			a = input(g,p1) ; //ne pas oublier la vérif
 			while(a<1||a>7) {
+				print_grid(g) ;
 				printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
 				a = input(g,p1) ;
 			}
        		if(a>0&&a<8) {
             	while(g->heights[a-1]==6) {
+            		print_grid(g) ;
                 	printf("Colonne pleine, choisissez en une autre !\n");
                 	a = input(g,p1) ;
             	}
@@ -154,11 +164,13 @@ token play(player p1, player p2) {
 		        int b;
 		        b = input(g,p2) ;
 		        while(b<1||b>7) {
+		        	print_grid(g) ;
 		        	printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
 		        	b = input(g,p2) ;
 		        }
 	       		if(b>0&&b<8) {
 	            	while(g->heights[b-1]==6) {
+	            		print_grid(g) ;
 	                	printf("Colonne pleine, choisissez en une autre !\n");
 	                	b = input(g,p2) ;
 	            	}
@@ -188,11 +200,13 @@ token play(player p1, player p2) {
 	    	int a ;
 			a = input(g,p1) ;
 			while(a<1||a>7) {
+				print_grid(g) ;
 				printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
 				a = input(g,p1) ;
 			}
        		if(a>0&&a<8) {
             	while(g->heights[a-1]==6) {
+            		print_grid(g) ;
                 	printf("Colonne pleine, choisissez en une autre !\n");
                 	a = input(g,p1) ;
             	}
@@ -211,11 +225,13 @@ token play(player p1, player p2) {
 		        int b;
 		        b = input(g,p2) ;
 		        while(b<1||b>7) {
+		        	print_grid(g) ;
 		        	printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
 		        	b = input(g,p2) ;
 		        }
 	       		if(b>0&&b<8) {
 	            	while(g->heights[b-1]==6) {
+	            		print_grid(g) ;
 	                	printf("Colonne pleine, choisissez en une autre !\n");
 	                	b = input(g,p2) ;
 	            	}

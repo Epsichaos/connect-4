@@ -278,7 +278,7 @@ int winner(grid g) {
 }
 
 
-#define LENGTH 100
+#define LENGTH 5
 
 /**
 *\brief Fonction \a input , utlisée pour recevoir l'action de jeu de l'autre joueur.
@@ -289,9 +289,9 @@ int winner(grid g) {
 */
 int input(grid g, player p) {
     if(p->player_kind==KEYBOARD) {
-        char nombre[100] ;
+        char nombre[LENGTH] ;
         printf("Joueur %d, indique ton numéro de colonne :\n",p->player_token);
-        fgets(nombre,100,stdin) ;
+        fgets(nombre,LENGTH,stdin) ;
         int a = atoi(nombre) ;
         return(a) ;
     }
@@ -415,7 +415,9 @@ void detect(int argc, char *argv[],player* joueurs) {
         }   
     }
     if(nb_joueurs!=2) {
-        printf("Erreur dans le nombre de joueur (ou leur synthaxe) passés en ligne de commande\n") ;
+        /* On libère la mémoire, vu qu'on ne joue pas ! */
+        printf("Erreur dans le nombre de joueurs (ou leur synthaxe) passés en ligne de commande\n") ;
+        free(joueurs) ;
         exit(EXIT_FAILURE) ;
     }
 }

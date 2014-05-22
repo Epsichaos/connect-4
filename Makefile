@@ -1,7 +1,3 @@
-# ----------------------------- #
-# --------- Makefile ---------- #
-# ----------------------------- #
-
 # Files
 
 FILE = main.c client-lib.c create_something.c play.c pond.c server-lib.c core.c

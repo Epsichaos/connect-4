@@ -5,7 +5,6 @@
 #include"fonctions.h"
 
 //Vérifier les tests
-//VIDER LES MALLOC BORDEL !
 //Finir de commenter les fonctions
 //fonction qui vérifie si le caractère entré est bien un chiffre entier ?
 
