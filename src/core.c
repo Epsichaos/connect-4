@@ -278,7 +278,7 @@ int winner(grid g) {
 }
 
 
-#define LENGTH 5
+#define LENGTH 100
 
 /**
 *\brief Fonction \a input , utlisée pour recevoir l'action de jeu de l'autre joueur.
@@ -292,6 +292,10 @@ int input(grid g, player p) {
         char nombre[LENGTH] ;
         printf("Joueur %d, indique ton numéro de colonne :\n",p->player_token);
         fgets(nombre,LENGTH,stdin) ;
+        while(strlen(nombre)>2||isdigit(nombre[0])==0) {
+            printf("Saisie incorrecte, Joueur %d, indique ton numéro de colonne :\n",p->player_token) ;
+            fgets(nombre,LENGTH,stdin) ;
+        }
         int a = atoi(nombre) ;
         return(a) ;
     }

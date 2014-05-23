@@ -34,7 +34,7 @@ player create_keyboard(token t) {
 }
 
 player create_ia(token t,depth d) {
-	player player_ia=malloc(sizeof(player)) ; /* On créé le joueur */
+	player player_ia=malloc(sizeof(player_type)) ; /* On créé le joueur */
 	if(player_ia==NULL) {
 		printf("Erreur d'allocation !\n") ;
 		exit(EXIT_FAILURE) ;
@@ -58,7 +58,7 @@ player create_ia(token t,depth d) {
 *\return Objet de type player, définit dans struct.h
 */
 player create_server(token t, int port) {
-	player player_srv=malloc(sizeof(player)) ;
+	player player_srv=malloc(sizeof(player_type)) ;
 	if(player_srv==NULL) {
 		printf("Erreur d'allocation !\n") ;
 		exit(EXIT_FAILURE) ;
@@ -81,7 +81,7 @@ player create_server(token t, int port) {
 *\return Objet de type player, définit dans struct.h
 */
 player create_client(token t, char *host, int port) {
-	player player_cli=malloc(sizeof(player)) ;
+	player player_cli=malloc(sizeof(player_type)) ;
 	if(player_cli==NULL) {
 		printf("Erreur d'allocation !\n") ;
 		exit(EXIT_FAILURE) ;

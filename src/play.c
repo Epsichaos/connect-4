@@ -10,7 +10,7 @@ token play(player p1, player p2) {
 	    print_grid(g);
 	    /* Compteur qui s'incrémente à chaque tour de jeu, et qui sert à déterminer si la grille est pleine */
 	    int compteur=0 ; 
-	    /* Servira à retourner le jeton du vainqueur */
+	    /* Retourner le jeton du vainqueur */
 	    int token_winner=0 ; 
 	    while(winner(g)==0&&compteur<42) {
 	    	int a ;
