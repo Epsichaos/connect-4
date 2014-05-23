@@ -10,31 +10,35 @@ déterminer la victoire, ...etc.
 #include<stdlib.h>
 #include<string.h> /* Pour strcmp */
 #include<ctype.h> /* Pour isdigit */
+#include<unistd.h> /* Pour Sleep */
 #include"fonctions.h"
 #include"struct.h"
+
+#define LENGTH 100 /* Macro utilisée pour la longueur des tableaux dans input() */
 
 /**
 *\brief Fonction create_grid, utilisée pour générer une grille de Puissance 4
 *\details Cette fonction permet au main, ou a posteriori à la fonction play{} de créer une grille de jeu
 */
 grid create_grid() {
-    /* On crée une grille, de type grid, et pour éviter une erreur de segmentation, on utilise malloc */
+    /* On crée une grille, de type grid_content, et pour éviter une erreur de segmentation, on utilise malloc */
     grid grille=malloc(sizeof(grid_content)); 
+    /* On teste le succes de l'allocation */
     if(grille==NULL) {
         printf("Erreur d'allocation dans create_grid\n") ;
         exit(EXIT_FAILURE) ;
     }
     int i ;
     int j ;
+    /* On initialise toute la grille à 0, en la parcourant avec la double boucle for. */
     for(i=0;i<LINE_NB;i++) {
         for(j=0;j<COLUMN_NB;j++) {
-            /* On initialise toute la grille à 0, en la parcourant avec la double boucle for. */
             grille->table[i][j]=NOTHING ; 
         }
     }
     int k;
+    /* On initialise le nombre de jetons par colonne à 0, pour chaque colonne, car toute la grille est vide. */
     for(k=0;k<COLUMN_NB;k++) {
-        /* On initialise le nombre de jetons par colonne à 0, pour chaque colonne, car toute la grille est vide. */
         grille->heights[k]=0; 
     }
     /* On retourne la grille ainsi créé, de type grid, qui est entièrement vide pour le moment */
@@ -47,28 +51,32 @@ grid create_grid() {
 *\param g grille (\a grid) que l'on souhaite afficher
 */
 void print_grid(grid g) {
+    /* Balise de couleur pour colorer la grille en cyan */
     couleur("36") ;
     printf(" 1  2  3  4  5  6  7 \n");
     couleur("0") ;  
     int i ;
     int j ;
+    /* On parcourt toute la grille, et selon ce que contiennent les cases, on affiche " ", "x" ou "o" */
     for(i=0;i<LINE_NB;i++) {
-        /* On parcourt toute la grille, et selon ce que contiennent les cases, on affiche " ", "x" ou "o" */
         for(j=0;j<COLUMN_NB;j++) { 
             couleur("36") ;
             printf("|") ;
             couleur("0") ;
             if(g->table[i][j]==NOTHING) {
+                /* Si la case est vide, on affiche un '.' blanc pour plus de visibilité/esthétique */
                 couleur("37") ;
                 printf(".") ;
                 couleur("0") ;
             }
             if(g->table[i][j]==RED) {
+                /* Si la case contient RED, on affiche une 'x' rouge ! */
                 couleur("31") ;
                 printf("x") ;
                 couleur("0") ;
             }   
             if(g->table[i][j]==YELLOW){
+                /* Si elle est YELLOW, on affiche un 'o' jaune */
                 couleur("33") ;
                 printf("o");
                 couleur("0") ;
@@ -96,53 +104,33 @@ grille \a g
 NOTHING sont des alias de type \a int)
 */
 int put_token(grid g, int column, token t) {
-    if(column<1 || column>7) {
-        printf("put_token a reçu un indice de colonne incorrect !\n");
-        exit(EXIT_FAILURE) ;
-    }
-    if((t!=RED)&&(t!=YELLOW)) {
-        printf("put_token a reçu un token t non valable !\n");
-        exit(EXIT_FAILURE);
-    }
+    /* Il n'y a pas de test dans la fonction put_token(), ils sont situés dans les fonctions play()
+    et input(). (Permet d'alléger le corps de put_token()) */
     column=column-1;
     int nb ;
     nb = g->heights[column] ;
-    if(nb==6) {
-        printf("put_token dit : La colonne est pleine !\n");
-        exit(EXIT_FAILURE) ;
-    }
-    if(nb>6 || nb<0) {
-        printf("Cas en théorie impossible dans put_token, mais restons prudents\n");
-        exit(EXIT_FAILURE) ;
-    }
     g->heights[column]=g->heights[column] +1 ;
     g->table[5-nb][column]=t ;
     return(0);
 }
 
 void erase_token(grid g, int column) {
+    /* Pareil que pour put_token, erase_token ne contient aucun test, car elle est utilisée pour enlever un jeton 
+    après qu'on l'ai posé avec la fonction where_play. Les colonnes ne seront donc jamais vides, donc inutile d'insérer des tests */
     column=column-1;
     int nb ;
     nb = g->heights[column] ;
-    if(nb==0) {
-        printf("La colonne est vide !\n") ;
-        exit(EXIT_FAILURE) ;
-    }
     g->table[6-nb][column]=NOTHING ;
     g->heights[column]=g->heights[column] - 1 ;
 }
 
 /**
-*\author Epsichaos
-*\version 1.0
-*\date 15 avril 2014
 *\brief Fonction winner, utilisée pour tester si une grille est gagnante
 *\details Cette fonction permet, en prenant une grille en fonction, de savoir si 
 *une configuration gagnante est présente ou non (respectant les normes de victoire)
 *relatives aux règles en vigueur dans le puissance 4
 *\param g grille de type \a grid 
 */
-
 int winner(grid g) {
     int i;
     int j;
@@ -277,9 +265,6 @@ int winner(grid g) {
     return(0);
 }
 
-
-#define LENGTH 100
-
 /**
 *\brief Fonction \a input , utlisée pour recevoir l'action de jeu de l'autre joueur.
 *\details Cette fonction permet de recevoir un message du client (ou du serveur, 
@@ -292,7 +277,10 @@ int input(grid g, player p) {
         char nombre[LENGTH] ;
         printf("Joueur %d, indique ton numéro de colonne :\n",p->player_token);
         fgets(nombre,LENGTH,stdin) ;
+        /* Test pour savoir si le caractère est bien un chiffre entre 0 et 9. Le cas chiffre = 0, 8, 9 ainsi que colonne pleine 
+        est testé dans le corps de play() */
         while(strlen(nombre)>2||isdigit(nombre[0])==0) {
+            print_grid(g) ;
             printf("Saisie incorrecte, Joueur %d, indique ton numéro de colonne :\n",p->player_token) ;
             fgets(nombre,LENGTH,stdin) ;
         }
@@ -351,6 +339,12 @@ void output(player p, int col_ind) {
     }
 }
 
+/**
+*\brief Fonction \a deconnexion , utlisée pour fermer proprement la connexion client/server à la fin de la partie
+*\details Cette fonction permet de déconnecter proprement en premier le client, puis le serveur.
+*\param p1 paramètre de type \a player , structure définie dans struct.h.
+*\param p2 paramètre de type \a player , structure définie dans struct.h.
+*/
 void deconnexion(player p1, player p2) {
     if(p1->player_kind==CLIENT) {
         client_close_connection(p1->player_data.player_client.client_connection) ;
@@ -360,6 +354,10 @@ void deconnexion(player p1, player p2) {
         client_close_connection(p2->player_data.player_client.client_connection) ;
         printf("Client déconnecté\n") ;
     }
+    if(p1->player_kind==SERVER||p2->player_kind==SERVER) {
+        printf("Merci d'attendre que le client se déconnecte \n") ;
+    }
+    sleep(2) ;
     if(p1->player_kind==SERVER) {
         server_close_connection(p1->player_data.player_server.server_connection) ;
         printf("Serveur déconnecté\n") ;
@@ -370,6 +368,15 @@ void deconnexion(player p1, player p2) {
     }
 }
 
+/**
+*\brief Fonction \a detect, qui sert à détecter les paramètres entrés sur la ligne de commande
+*\details Cette fonction permet de gérer tous les cas de paramètres sur ligne de commande, et de réagir 
+* en conséquence (fonction d'aide, message d'erreurs, ...etc).
+*\param argc le paramètre de type \a int en argument du main() (donne le nombre de paramètres passés en ligne de commande).
+*\param argv de type \a char** , tableau en argument du main() contenant tous les paramètres passés en lige de commande.
+*\param joueurs de type \player* : structre pouvant contenir 2 player. On utilise le passage par adresse pour le remplir, 
+* du coup, cette fonction ne renvoit rien (\a void).
+*/
 void detect(int argc, char *argv[],player* joueurs) {
     int nb_joueurs = 0 ;
     int i ;
@@ -388,44 +395,77 @@ void detect(int argc, char *argv[],player* joueurs) {
             /* Condition pour gérer le cas où on ne met rien après l'IA */
             if(i==argc-1) { 
                 printf("Erreur, il manque la profondeur de l'IA\n") ; 
+                /* On libère la mémoire, vu qu'on ne joue pas ! */
+                free(joueurs) ;
                 exit(EXIT_FAILURE) ;
             }
             /* Permet de vérifier si le paramètre entré après -ia est correct */
             else if(isdigit(argv[i+1][0])!=0&&argv[i+1][0]!='0') { 
+                /* On autorise uniquement les nombres à moins de 3 chiffres strictement */
                 if(argv[i+1][1]!='\0'&&isdigit(argv[i+1][1])!=0&&argv[i+1][2]=='\0') {
                 joueurs[nb_joueurs] = create_ia(NOTHING,atoi(argv[i+1])) ;
                 }
-                else{
+                /* Le else if n'est emprunté que lorsque le nombre n'a qu'un chiffre */
+                else if(argv[i+1][1]=='\0'){
                     joueurs[nb_joueurs] = create_ia(NOTHING,atoi(argv[i+1])) ;
                 }
+                else {
+                printf("Erreur, le caractère entré après l'IA est un chiffre > 99\n") ;
+                /* On libère la mémoire, vu qu'on ne joue pas ! */
+                free(joueurs) ;
+                exit(EXIT_FAILURE) ;    
+                }
             }
+            /* Sinon, il y a une erreur de saisie */
             else {
-                printf("Erreur, le caractère entré après l'IA n'est pas un chiffre, ou est un chiffre > 99 ou < 1\n") ;
+                printf("Erreur, le caractère entré après l'IA n'est pas un chiffre, ou est un chiffre < 1\n") ;
+                /* On libère la mémoire, vu qu'on ne joue pas ! */
+                free(joueurs) ;
                 exit(EXIT_FAILURE) ;
             }
         }
+        /* Si on détecte un clavier, on créé un joueur de type clavier */
         if(strcmp(argv[i],"-keyboard")==0) {
             /* On incrémente le nombre de joueurs */
             nb_joueurs = nb_joueurs + 1 ; 
             joueurs[nb_joueurs] = create_keyboard(NOTHING) ;
         }
+        /* Création d'un joueur de type client. Ici pas de vérification à faire, si le client entre mal les " coordonnées " 
+        du serveur, c'est de sa faute, on ne peut contrôler cette variable (le numéro de port et nom d'hôte changeant en
+        permanence*/
         if(strcmp(argv[i],"-client")==0) {
             nb_joueurs = nb_joueurs + 1 ; 
             joueurs[nb_joueurs] = create_client(NOTHING,argv[i+1],atoi(argv[i+2])) ;
         }
+        /* Création d'un joueur de type serveur */
         if(strcmp(argv[i],"-server")==0) {
             nb_joueurs = nb_joueurs + 1 ; 
+            if(i==argc-1) { 
+                printf("Erreur, il manque le numéro de port du serveur !\n") ; 
+                /* On libère la mémoire, vu qu'on ne joue pas ! */
+                free(joueurs) ;
+                exit(EXIT_FAILURE) ;
+            }
+            else if(isdigit(argv[i+1][0])!=0)
             joueurs[nb_joueurs] =create_server(NOTHING, atoi(argv[i+1])) ;
         }   
     }
     if(nb_joueurs!=2) {
-        /* On libère la mémoire, vu qu'on ne joue pas ! */
         printf("Erreur dans le nombre de joueurs (ou leur synthaxe) passés en ligne de commande\n") ;
+        /* On libère la mémoire, vu qu'on ne joue pas ! */
         free(joueurs) ;
         exit(EXIT_FAILURE) ;
     }
 }
 
+/**
+*\brief Fonction \a output , utlisée pour envoyer l'action de jeu à l'autre joueur.
+*\details Cette fonction permet d'envoyer un message au client (ou au serveur), contenant 
+*un entier désignant la colonne dans lequel le joueur en argument (et envoyant le message) 
+*souhaite lâcher un jeton.
+*\param p paramètre de type \a player , structure définie dans struct.h.
+*\param col_ind entier, désignant la colonne dans laquelle on souhaite lâcher le jeton.
+*/
 void help(void) {
     printf("\n") ;
     couleur("31") ;

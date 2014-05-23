@@ -15,6 +15,8 @@ token play(player p1, player p2) {
 	    while(winner(g)==0&&compteur<42) {
 	    	int a ;
 			a = input(g,p1) ;
+			/* Input renvoit forcément un seul chiffre, et un seul, mais la vérification
+				>0 et <8 est inscrite ci après */
 			while(a<1||a>7) {
 				print_grid(g) ;
 				printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
@@ -28,19 +30,22 @@ token play(player p1, player p2) {
             	}
         	}
 			put_token(g, a, p1->player_token) ;
+			/* On notifie le coup à l'autre joueur */
 			output(p2,a) ;
+			/* On incrémente le compteur de coups */
 			compteur = compteur + 1 ;
 			print_grid(g) ;
 	        if(winner(g)==1) {
 	            token_winner=p1->player_token ;
 	        }
+	        /* Cas où le nombre de coups maximal a été joué */
 	        if(compteur==42) {
 	            token_winner=NOTHING ;
 	        }
 	        if(winner(g)==0&&compteur<42) {
 		        int b;
-		        b = input(g,p2) ; /* Vérification de saisie ci dessous*/
-		        //b = where_play(g,1,p2->player_token) ;
+		        b = input(g,p2) ; 
+		        /* Vérification de saisie ci dessous*/
 		        while(b<1||b>7) {
 		        	print_grid(g) ;
 		        	printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
@@ -65,6 +70,7 @@ token play(player p1, player p2) {
 		        }		        
 	        }
 	    }
+	    /* On libère la mémoire ! */
 	    free(g) ;
 	    return(token_winner) ;
 	}
@@ -76,7 +82,8 @@ token play(player p1, player p2) {
 	    int token_winner ;
 	    while(winner(g)==0&&compteur<42) {
 	    	int a ;
-			a = input(g,p1) ; //ne pas oublier la vérif
+			a = input(g,p1) ;
+			/* Vérification de saisie ci dessous*/
 			while(a<1||a>7) {
 				print_grid(g) ;
 				printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
@@ -102,6 +109,7 @@ token play(player p1, player p2) {
 	        if(winner(g)==0&&compteur<42) {
 		        int b;
 		        b = input(g,p2) ;
+		        /* Vérification de saisie ci dessous*/
 		        while(b<1||b>7) {
 		        	print_grid(g) ;
 		        	printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
@@ -126,6 +134,7 @@ token play(player p1, player p2) {
 		        }		        
 	        }
 	    }
+	    /* On libère la mémoire ! */
 	    free(g) ;
 	    return(token_winner) ;
 	}
@@ -137,7 +146,8 @@ token play(player p1, player p2) {
 	    int token_winner ;
 	    while(winner(g)==0&&compteur<42) {
 	    	int a ;
-			a = input(g,p1) ; //ne pas oublier la vérif
+			a = input(g,p1) ;
+			/* Vérification de saisie ci dessous*/
 			while(a<1||a>7) {
 				print_grid(g) ;
 				printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
@@ -163,6 +173,7 @@ token play(player p1, player p2) {
 	        if(winner(g)==0&&compteur<42) {
 		        int b;
 		        b = input(g,p2) ;
+		        /* Vérification de saisie ci dessous*/
 		        while(b<1||b>7) {
 		        	print_grid(g) ;
 		        	printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
@@ -187,6 +198,7 @@ token play(player p1, player p2) {
 		        }		        
 	        }
 	    }
+	    /* On libère la mémoire ! */
 	    free(g) ;
 	    return(token_winner) ;
 	}
@@ -199,6 +211,7 @@ token play(player p1, player p2) {
 	    while(winner(g)==0&&compteur<42) {
 	    	int a ;
 			a = input(g,p1) ;
+			/* Vérification de saisie ci dessous*/
 			while(a<1||a>7) {
 				print_grid(g) ;
 				printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
@@ -224,6 +237,7 @@ token play(player p1, player p2) {
 	        if(winner(g)==0&&compteur<42) {
 		        int b;
 		        b = input(g,p2) ;
+		        /* Vérification de saisie ci dessous*/
 		        while(b<1||b>7) {
 		        	print_grid(g) ;
 		        	printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
@@ -248,6 +262,7 @@ token play(player p1, player p2) {
 		        }		        
 	        }
 	    }
+	    /* On libère la mémoire ! */
 	    free(g) ;
 	    return(token_winner) ;
 	}

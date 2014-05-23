@@ -21,9 +21,11 @@
 *\return Objet de type player, définit dans struct.h
 */
 player create_keyboard(token t) {
-	player player_key=malloc(sizeof(player_type)) ; // On créé le joueur 
+	/* On "créé" le joueur + allocation dynamique avec malloc */
+	player player_key=malloc(sizeof(player_type)) ;
+	/* On teste le succès de l'allocation */
 	if(player_key==NULL) {
-		printf("Erreur d'allocation !\n") ;
+		printf("Erreur d'allocation dans create_keyboard !\n") ;
 		exit(EXIT_FAILURE) ;
 	} 
 	/* On initialise le joueur de type player pour que tout corresponde à un type de jeu clavier */
@@ -34,9 +36,11 @@ player create_keyboard(token t) {
 }
 
 player create_ia(token t,depth d) {
-	player player_ia=malloc(sizeof(player_type)) ; /* On créé le joueur */
+	/* On "créé" et on alloue le joueur */
+	player player_ia=malloc(sizeof(player_type)) ; 
+	/* Test de l'allocation */
 	if(player_ia==NULL) {
-		printf("Erreur d'allocation !\n") ;
+		printf("Erreur d'allocation dans create_ia !\n") ;
 		exit(EXIT_FAILURE) ;
 	}
 	/* On initialise le joueur de type player pour que tout corresponde à un type de jeu IA */
@@ -58,11 +62,14 @@ player create_ia(token t,depth d) {
 *\return Objet de type player, définit dans struct.h
 */
 player create_server(token t, int port) {
+	/* On "créé" et on alloue le joueur */
 	player player_srv=malloc(sizeof(player_type)) ;
+	/* Test de l'allocation */
 	if(player_srv==NULL) {
-		printf("Erreur d'allocation !\n") ;
+		printf("Erreur d'allocation dans create_server !\n") ;
 		exit(EXIT_FAILURE) ;
 	}
+	/* On initialise le joueur de type player pour que tout corresponde à un type de jeu server */
 	player_srv->player_kind=SERVER ;
 	player_srv->player_token = t ;
 	player_srv->player_data.player_server.server_port=port ;
@@ -81,11 +88,14 @@ player create_server(token t, int port) {
 *\return Objet de type player, définit dans struct.h
 */
 player create_client(token t, char *host, int port) {
+	/* On "créé" et on alloue le joueur */
 	player player_cli=malloc(sizeof(player_type)) ;
+	/* Test de l'allocation */
 	if(player_cli==NULL) {
-		printf("Erreur d'allocation !\n") ;
+		printf("Erreur d'allocation dans create_client !\n") ;
 		exit(EXIT_FAILURE) ;
 	}
+	/* On initialise le joueur de type player pour que tout corresponde à un type de jeu client */
 	player_cli->player_kind=CLIENT ;
 	player_cli->player_token = t ;
 	player_cli->player_data.player_client.client_host=host ;

@@ -6,7 +6,6 @@
 
 //Vérifier les tests
 //Finir de commenter les fonctions
-//fonction qui vérifie si le caractère entré est bien un chiffre entier ?
 
 int main(int argc, char *argv[]) { 	
 	int token_winner ;
