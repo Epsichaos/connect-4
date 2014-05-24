@@ -6,8 +6,8 @@ FILE = main.c client-lib.c create_something.c play.c pond.c server-lib.c core.c
 
 SRC_PATH = src
 OBJ_PATH = obj
-EXE_PATH = exe
-INC_PATH = inc
+EXE_PATH = bin
+INC_PATH = includes
 
 # Macros
 
