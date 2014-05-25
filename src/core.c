@@ -14,11 +14,13 @@ déterminer la victoire, ...etc.
 #include"fonctions.h"
 #include"struct.h"
 
-#define LENGTH 100 /* Macro utilisée pour la longueur des tableaux dans input() */
+/** Macro utilisée pour la longueur des tableaux dans input() */
+#define LENGTH 100
 
 /**
 *\brief Fonction create_grid, utilisée pour générer une grille de Puissance 4
-*\details Cette fonction permet au main, ou a posteriori à la fonction play{} de créer une grille de jeu
+*\details Cette fonction permet au main, ou a posteriori à la fonction play{} de créer une grille de jeu.
+*\return g de type grid : c'est la grille créé par create_grid.
 */
 grid create_grid() {
     /* On crée une grille, de type grid_content, et pour éviter une erreur de segmentation, on utilise malloc */
@@ -120,7 +122,9 @@ void erase_token(grid g, int column) {
     column=column-1;
     int nb ;
     nb = g->heights[column] ;
+    /* On efface le jeton en mettant NOTHING à la place */
     g->table[6-nb][column]=NOTHING ;
+    /* On décrémente l'indice de nombre de jetons par colonne */
     g->heights[column]=g->heights[column] - 1 ;
 }
 
@@ -128,7 +132,11 @@ void erase_token(grid g, int column) {
 *\brief Fonction winner, utilisée pour tester si une grille est gagnante
 *\details Cette fonction permet, en prenant une grille en fonction, de savoir si 
 *une configuration gagnante est présente ou non (respectant les normes de victoire)
-*relatives aux règles en vigueur dans le puissance 4
+*relatives aux règles en vigueur dans le puissance 4. Cette fonction n'est pas optimale, puisque elle teste
+*toute la grille, mais nous avons préféré simplifier son expression, plutôt qu'utiliser l'astuce : winner(grid g, int column), où column
+*est la dernière colonne dans laquelle on a jouer. Dans ce cas, on aurait pu enlever la double boucle for, pour effectuer les mêmes conditions, 
+*(toutes les 8), mais seulement sur une SEULE case, la dernière dans laquelle on a jouée. Faire cette modification est assez facile, mais le gain
+*en temps de traitement sera imperceptible, nous avons donc décidé de garder celle-ci !
 *\param g grille de type \a grid 
 */
 int winner(grid g) {
@@ -136,6 +144,7 @@ int winner(grid g) {
     int j;
     for(i=0;i<LINE_NB;i++) {
         for(j=0;j<COLUMN_NB;j++) {
+            /* On effectue le test que si la case est non vide */
             if(g->table[i][j]!=NOTHING) {
                 int caase;
                 caase=g->table[i][j];
@@ -146,9 +155,11 @@ int winner(grid g) {
                 while(k!=6&&increment<3) { 
                     k=k+1 ;
                     increment=increment+1 ;
+                    /* Si la case suivant est la même que celle d'origine, on compte */
                     if(g->table[i][k]==caase) {
                     win1=win1+1 ;
                     }
+                    /* Si les 3 suivantes sont de la même couleur, c'est gagné !*/
                     if(win1==3) {
                         return(1);
                     }
