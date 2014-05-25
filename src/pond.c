@@ -84,7 +84,7 @@ int where_play(grid g,int depth,token t) {
 				buf[j]=i ;
 				j = j+1 ;
 			}
-			/* Si une valeur renvoyée est > BestMove, alors on remet les indices à 0, et on écrase le tableau */
+			/* Si une valeur renvoyée est < BestMove, alors on remet les indices à 0, et on écrase le tableau */
 			if(tmp<BestMove) { 
 				j=0 ;
 				for(z=0;z<7;z++) {

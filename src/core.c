@@ -273,7 +273,7 @@ int winner(grid g) {
             }
         }
     }
-    return(0);
+    return(0) ;
 }
 
 /**
@@ -333,7 +333,7 @@ int input(grid g, player p) {
 *\param col_ind entier, désignant la colonne dans laquelle on souhaite lâcher le jeton.
 */
 void output(player p, int col_ind) {
-    if(p->player_kind==KEYBOARD) {
+    if(p->player_kind==KEYBOARD||p->player_kind==IA) {
     }
     if(p->player_kind==CLIENT) {
         int a=col_ind ;
@@ -460,8 +460,14 @@ void detect(int argc, char *argv[],player* joueurs) {
                 free(joueurs) ;
                 exit(EXIT_FAILURE) ;
             }
-            else if(isdigit(argv[i+1][0])!=0)
-            joueurs[nb_joueurs] =create_server(NOTHING, atoi(argv[i+1])) ;
+            else if(isdigit(argv[i+1][0])!=0&&isdigit(argv[i+1][1])!=0&&isdigit(argv[i+1][2])!=0&&isdigit(argv[i+1][3])!=0) {
+                joueurs[nb_joueurs] =create_server(NOTHING, atoi(argv[i+1])) ;
+            }
+            else {
+                printf("Entrez un numéro de port compris à 4 chiffres, ou numéro de port incorrect\n") ;
+                free(joueurs) ;
+                exit(EXIT_FAILURE) ;
+            }
         }   
     }
     if(nb_joueurs!=2) {
