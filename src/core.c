@@ -288,9 +288,8 @@ int input(grid g, player p) {
         char nombre[LENGTH] ;
         printf("Joueur %d, indique ton numéro de colonne :\n",p->player_token);
         fgets(nombre,LENGTH,stdin) ;
-        /* Test pour savoir si le caractère est bien un chiffre entre 0 et 9. Le cas chiffre = 0, 8, 9 ainsi que colonne pleine 
-        est testé dans le corps de play() */
-        while(strlen(nombre)>2||isdigit(nombre[0])==0) {
+        /* Test pour savoir si le caractère est bien un chiffre entre 1 et 7*/
+        while(strlen(nombre)>2||isdigit(nombre[0])==0||nombre[0]=='0'||nombre[0]=='8'||nombre[0]=='9') {
             print_grid(g) ;
             printf("Saisie incorrecte, Joueur %d, indique ton numéro de colonne :\n",p->player_token) ;
             fgets(nombre,LENGTH,stdin) ;
@@ -460,11 +459,14 @@ void detect(int argc, char *argv[],player* joueurs) {
                 free(joueurs) ;
                 exit(EXIT_FAILURE) ;
             }
+            /* Condition pour tester si le caractère suivant -server est bien un nombre à 4 chiffres */
             else if(isdigit(argv[i+1][0])!=0&&isdigit(argv[i+1][1])!=0&&isdigit(argv[i+1][2])!=0&&isdigit(argv[i+1][3])!=0) {
                 joueurs[nb_joueurs] =create_server(NOTHING, atoi(argv[i+1])) ;
             }
             else {
+                /* Message d'erreur */
                 printf("Entrez un numéro de port compris à 4 chiffres, ou numéro de port incorrect\n") ;
+                /* On libère la mémoire */
                 free(joueurs) ;
                 exit(EXIT_FAILURE) ;
             }
@@ -498,20 +500,6 @@ token play(player p1, player p2) {
         while(winner(g)==0&&compteur<42) {
             int a ;
             a = input(g,p1) ;
-            /* Input renvoit forcément un seul chiffre, et un seul, mais la vérification
-                >0 et <8 est inscrite ci après */
-            while(a<1||a>7) {
-                print_grid(g) ;
-                printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
-                a = input(g,p1) ;
-            }
-            if(a>0&&a<8) {
-                while(g->heights[a-1]==6) {
-                    print_grid(g) ;
-                    printf("Colonne pleine, choisissez en une autre !\n");
-                    a = input(g,p1) ;
-                }
-            }
             put_token(g, a, p1->player_token) ;
             /* On notifie le coup à l'autre joueur */
             output(p2,a) ;
@@ -528,19 +516,6 @@ token play(player p1, player p2) {
             if(winner(g)==0&&compteur<42) {
                 int b;
                 b = input(g,p2) ; 
-                /* Vérification de saisie ci dessous*/
-                while(b<1||b>7) {
-                    print_grid(g) ;
-                    printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
-                    b = input(g,p2) ;
-                }
-                if(b>0&&b<8) {
-                    while(g->heights[b-1]==6) {
-                        print_grid(g) ;
-                        printf("Colonne pleine, choisissez en une autre !\n");
-                        b = input(g,p2) ;
-                    }
-                }
                 put_token(g, b, p2->player_token) ;
                 output(p1,b) ;
                 compteur = compteur + 1 ;
@@ -566,19 +541,6 @@ token play(player p1, player p2) {
         while(winner(g)==0&&compteur<42) {
             int a ;
             a = input(g,p1) ;
-            /* Vérification de saisie ci dessous*/
-            while(a<1||a>7) {
-                print_grid(g) ;
-                printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
-                a = input(g,p1) ;
-            }
-            if(a>0&&a<8) {
-                while(g->heights[a-1]==6) {
-                    print_grid(g) ;
-                    printf("Colonne pleine, choisissez en une autre !\n");
-                    a = input(g,p1) ;
-                }
-            }
             put_token(g, a, p1->player_token) ;
             output(p2,a) ;
             compteur = compteur + 1 ;
@@ -592,19 +554,6 @@ token play(player p1, player p2) {
             if(winner(g)==0&&compteur<42) {
                 int b;
                 b = input(g,p2) ;
-                /* Vérification de saisie ci dessous*/
-                while(b<1||b>7) {
-                    print_grid(g) ;
-                    printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
-                    b = input(g,p2) ;
-                }
-                if(b>0&&b<8) {
-                    while(g->heights[b-1]==6) {
-                        print_grid(g) ;
-                        printf("Colonne pleine, choisissez en une autre !\n");
-                        b = input(g,p2) ;
-                    }
-                }
                 put_token(g, b, p2->player_token) ;
                 output(p1,b) ;
                 compteur = compteur + 1 ;
@@ -630,19 +579,6 @@ token play(player p1, player p2) {
         while(winner(g)==0&&compteur<42) {
             int a ;
             a = input(g,p1) ;
-            /* Vérification de saisie ci dessous*/
-            while(a<1||a>7) {
-                print_grid(g) ;
-                printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
-                a = input(g,p1) ;
-            }
-            if(a>0&&a<8) {
-                while(g->heights[a-1]==6) {
-                    print_grid(g) ;
-                    printf("Colonne pleine, choisissez en une autre !\n");
-                    a = input(g,p1) ;
-                }
-            }
             put_token(g, a, p1->player_token) ;
             output(p2,a) ;
             compteur = compteur + 1 ;
@@ -656,19 +592,6 @@ token play(player p1, player p2) {
             if(winner(g)==0&&compteur<42) {
                 int b;
                 b = input(g,p2) ;
-                /* Vérification de saisie ci dessous*/
-                while(b<1||b>7) {
-                    print_grid(g) ;
-                    printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
-                    b = input(g,p2) ;
-                }
-                if(b>0&&b<8) {
-                    while(g->heights[b-1]==6) {
-                        print_grid(g) ;
-                        printf("Colonne pleine, choisissez en une autre !\n");
-                        b = input(g,p2) ;
-                    }
-                }
                 put_token(g, b, p2->player_token) ;
                 output(p1,b) ;
                 compteur = compteur + 1 ;
@@ -694,19 +617,6 @@ token play(player p1, player p2) {
         while(winner(g)==0&&compteur<42) {
             int a ;
             a = input(g,p1) ;
-            /* Vérification de saisie ci dessous*/
-            while(a<1||a>7) {
-                print_grid(g) ;
-                printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
-                a = input(g,p1) ;
-            }
-            if(a>0&&a<8) {
-                while(g->heights[a-1]==6) {
-                    print_grid(g) ;
-                    printf("Colonne pleine, choisissez en une autre !\n");
-                    a = input(g,p1) ;
-                }
-            }
             put_token(g, a, p1->player_token) ;
             output(p2,a) ;
             compteur = compteur + 1 ;
@@ -720,19 +630,6 @@ token play(player p1, player p2) {
             if(winner(g)==0&&compteur<42) {
                 int b;
                 b = input(g,p2) ;
-                /* Vérification de saisie ci dessous*/
-                while(b<1||b>7) {
-                    print_grid(g) ;
-                    printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
-                    b = input(g,p2) ;
-                }
-                if(b>0&&b<8) {
-                    while(g->heights[b-1]==6) {
-                        print_grid(g) ;
-                        printf("Colonne pleine, choisissez en une autre !\n");
-                        b = input(g,p2) ;
-                    }
-                }
                 put_token(g, b, p2->player_token) ;
                 output(p1,b) ;
                 compteur = compteur + 1 ;
@@ -767,7 +664,7 @@ void help(void) {
     couleur("31") ;
     printf("      ------------------------------------------\n") ;
     printf("      |     -------   Connect-4   -------      |\n") ;
-    printf("      |       -- A game by Epsichaos --        |\n") ;
+    printf("      |       -- A game by IN-104 --           |\n") ;
     printf("      ------------------------------------------\n") ;
     printf("\n") ;
     couleur("0") ;

@@ -79,7 +79,7 @@ int where_play(grid g,int depth,token t) {
 				/* ... On lance alphabeta en indiquant que le prochain joueur à joueur joue les RED */
 				tmp=alphabeta(g,-1000,1000,depth,RED) ; 
 			}
-			/* En cas d'égalité, on stocke à la suite dans un tableau, en vu de décider du choix aléatoirement */
+			/* En cas d'égalité, on stocke à la suite dans un tableau, en vue de décider du choix aléatoirement */
 			if(tmp==BestMove) { 
 				buf[j]=i ;
 				j = j+1 ;
