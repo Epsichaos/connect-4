@@ -106,8 +106,8 @@ grille \a g
 NOTHING sont des alias de type \a int)
 */
 int put_token(grid g, int column, token t) {
-    /* Il n'y a pas de test dans la fonction put_token(), ils sont situés dans les fonctions play()
-    et input(). (Permet d'alléger le corps de put_token()) */
+    /* Il n'y a pas de test dans la fonction put_token(), ils sont situés dans la fonction
+    input(). (Permet d'alléger le corps de put_token()) */
     column=column-1;
     int nb ;
     nb = g->heights[column] ;
@@ -284,6 +284,7 @@ int winner(grid g) {
 *\return Un entier, correspondant au numéro de colonne dans laquelle le joueur souhaite déposer un jeton.
 */
 int input(grid g, player p) {
+    /* Si le joueur est de type clavier */
     if(p->player_kind==KEYBOARD) {
         char nombre[LENGTH] ;
         printf("Joueur %d, indique ton numéro de colonne :\n",p->player_token);
@@ -294,9 +295,11 @@ int input(grid g, player p) {
             printf("Saisie incorrecte, Joueur %d, indique ton numéro de colonne :\n",p->player_token) ;
             fgets(nombre,LENGTH,stdin) ;
         }
+        /* On converti la chaîne de caractère en entier */
         int a = atoi(nombre) ;
         return(a) ;
     }
+    /* Si le joueur est de type client */
     if(p->player_kind==CLIENT) {
         int a ;
         char buf[LENGTH] ;
@@ -305,6 +308,7 @@ int input(grid g, player p) {
         a=atoi(buf) ;
         return(a) ;
     }
+    /* Si le joueur est de type server */
     if(p->player_kind==SERVER) {
         int a ;
         char buf[LENGTH] ;
@@ -313,11 +317,14 @@ int input(grid g, player p) {
         a=atoi(buf) ;
         return(a) ;
     }
+    /* Si le joueur est de type ia */
     if(p->player_kind==IA) {
         int a ;
+        /* On renvoit l'indice de colonne conseillé par la fonction */
         a = where_play(g,p->player_data.player_ia,p->player_token) ;
         return(a) ;
     }
+    /* Ne sera normalement jamais empruntée */
     else {
         return(0) ;
     }
@@ -327,24 +334,29 @@ int input(grid g, player p) {
 *\brief Fonction \a output , utlisée pour envoyer l'action de jeu à l'autre joueur.
 *\details Cette fonction permet d'envoyer un message au client (ou au serveur), contenant 
 *un entier désignant la colonne dans lequel le joueur en argument (et envoyant le message) 
-*souhaite lâcher un jeton.
+*souhaite lâcher un jeton. Elle ne contient aucune vérification car elle est utilisée a posteriori, après toutes
+*les vérifications faites dans input().
 *\param p paramètre de type \a player , structure définie dans struct.h.
 *\param col_ind entier, désignant la colonne dans laquelle on souhaite lâcher le jeton.
 */
 void output(player p, int col_ind) {
+    /* Si le joueur est KEYBOARD ou IA, on ne fait rien */
     if(p->player_kind==KEYBOARD||p->player_kind==IA) {
     }
+    /* Si il est de type client */
     if(p->player_kind==CLIENT) {
         int a=col_ind ;
         char buf[LENGTH] ;
-        if((a>0&&a<8))
         sprintf(buf,"%d",a) ;
+        /* On envoit un message au serveur pour le notifier du coup */
         client_send_message(p->player_data.player_client.client_connection, buf) ;
     }
+    /* Si il est de type server */
     if(p->player_kind==SERVER) {
         int a=col_ind ;
         char buf[LENGTH] ;
         sprintf(buf,"%d",a) ;
+        /* On envoit un message au client, pour le notifier du coup */
         server_send_message(p->player_data.player_server.server_connection, buf) ;
     }
 }
@@ -652,12 +664,8 @@ token play(player p1, player p2) {
 }
 
 /**
-*\brief Fonction \a output , utlisée pour envoyer l'action de jeu à l'autre joueur.
-*\details Cette fonction permet d'envoyer un message au client (ou au serveur), contenant 
-*un entier désignant la colonne dans lequel le joueur en argument (et envoyant le message) 
-*souhaite lâcher un jeton.
-*\param p paramètre de type \a player , structure définie dans struct.h.
-*\param col_ind entier, désignant la colonne dans laquelle on souhaite lâcher le jeton.
+*\brief Fonction \a help , qui servira à aider un utilisateur non informé sur la syntaxe utilisée
+*\details Cette fonction permet d'afficher de l'aide et des exemples.
 */
 void help(void) {
     printf("\n") ;
