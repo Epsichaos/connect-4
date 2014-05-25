@@ -53,7 +53,7 @@ mrproper: clean
 	@echo "Nettoyage des fichiers temporaires et des .DS_Store effectué." 
 
 tar:
-	tar -cvf connect-4.tar Makefile src include
+	tar -cvf connect-4.tar Makefile src include connect4.png Doxyfile README_fr.md
 	gzip -9 connect-4.tar
 
 run:

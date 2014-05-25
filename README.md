@@ -24,7 +24,7 @@ where [player] is :
 * '-server -port' if the type is SERVER,
 * '-ia -depth' if the type is IA.
 
-Exemples : 
+Examples : 
 -------------
 
 	./connect4.x -keyboard -keyboard

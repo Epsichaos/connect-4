@@ -11,38 +11,50 @@
 #include"struct.h"
 #include"fonctions.h"
 
-//Vérifier les tests
-//Finir de commenter les fonctions
-
 int main(int argc, char *argv[]) { 	
 	int token_winner ;
+    /* On alloue joueurs */
 	player *joueurs=malloc(2*sizeof(player_type)) ;
+    /* Test de l'allocation */
 	if(joueurs == NULL) { 
-		printf("Erreur d'allocation !\n");
+		printf("Erreur d'allocation dans le main !\n");
 		exit(EXIT_FAILURE) ;
 	}
+    /* Dans ce cas, il n'y a aucun paramètres de rentrés */
     if(argc==1) {
-        printf("Error in parameters, if you need help please run ./connect4.x --help\n") ;
+        printf("Erreur dans les pamatères, si vous avez besoin d'aide, lancez ./connect4.x --help\n") ;
+        free(joueurs) ;
         exit(EXIT_FAILURE) ;
     }
+    /* On détecte les paramètres entrés en ligne de commande */
 	detect(argc,argv,joueurs) ; 
 	player joueur1=joueurs[1] ;
 	player joueur2=joueurs[2] ;
+    /* On libère joueurs vu qu'on a plus besoin de lui */
 	free(joueurs);
+    /* On assigne les jetons à chaque joueur, puisque ils sont initialisés à NOTHING */
 	joueur1->player_token=RED ;
 	joueur2->player_token=YELLOW ;
+    /* On lance la partie */
 	token_winner = play(joueur1,joueur2) ; 
+    /* On affiche le gagnant */
 	if(token_winner!=0) {
 		printf("Le joueur %d a gagné !\n",token_winner) ;
 	}
 	if(token_winner==0) {
 		printf("Match Nul : Personne n'a gagné !\n") ;
 	}
+    /* On déconnecte proprement le client/serveur */
 	deconnexion(joueur1,joueur2) ; 
+    /* On finit par vider la mémoire */
 	free(joueur1) ;
 	free(joueur2) ;
 	return(0) ;
 }
+
+/* Ce qui suit est le texte de la page d'accueil de la documentation Doxygen. A défaut de faire un fichier uniquement pour l'appeler, je l'ai insérée
+* à la fin du main. Je n'ai trouvé que ce moyen pour la gérer proprement.
+*/
 
 /**
 *@mainpage
