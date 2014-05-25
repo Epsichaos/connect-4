@@ -270,7 +270,7 @@ int winner(grid g) {
 *\details Cette fonction permet de recevoir un message du client (ou du serveur, 
 *selon le type de joueur en entrée), correspondant au coup que celui-ci veut jouer.
 *\param p paramètre de type \a player , structure définie dans struct.h.
-*\return Un entier, correspondant au numéro de colonne dans laquelle le joueur souhaite déposer un jeton
+*\return Un entier, correspondant au numéro de colonne dans laquelle le joueur souhaite déposer un jeton.
 */
 int input(grid g, player p) {
     if(p->player_kind==KEYBOARD) {
@@ -344,6 +344,7 @@ void output(player p, int col_ind) {
 *\details Cette fonction permet de déconnecter proprement en premier le client, puis le serveur.
 *\param p1 paramètre de type \a player , structure définie dans struct.h.
 *\param p2 paramètre de type \a player , structure définie dans struct.h.
+*\return Cette fonction ne retourne rien, elle affiche juste les confirmations de déconnexion à l'écran.
 */
 void deconnexion(player p1, player p2) {
     if(p1->player_kind==CLIENT) {
@@ -357,6 +358,7 @@ void deconnexion(player p1, player p2) {
     if(p1->player_kind==SERVER||p2->player_kind==SERVER) {
         printf("Merci d'attendre que le client se déconnecte \n") ;
     }
+    /* On laisse le temps au client de se déconnecter */
     sleep(2) ;
     if(p1->player_kind==SERVER) {
         server_close_connection(p1->player_data.player_server.server_connection) ;
@@ -376,6 +378,7 @@ void deconnexion(player p1, player p2) {
 *\param argv de type \a char** , tableau en argument du main() contenant tous les paramètres passés en lige de commande.
 *\param joueurs de type \player* : structre pouvant contenir 2 player. On utilise le passage par adresse pour le remplir, 
 * du coup, cette fonction ne renvoit rien (\a void).
+*\return Cette fonction ne retourne rien, le passage par adresse permet de s'affranchir d'un retour de type \a player*
 */
 void detect(int argc, char *argv[],player* joueurs) {
     int nb_joueurs = 0 ;
@@ -455,6 +458,282 @@ void detect(int argc, char *argv[],player* joueurs) {
         /* On libère la mémoire, vu qu'on ne joue pas ! */
         free(joueurs) ;
         exit(EXIT_FAILURE) ;
+    }
+}
+
+/**
+*\brief Fonction \a play, qui sert à jouer de manière générique
+*\details Cette fonction permet de lancer une partie de manière totalement indépendante du type des joueurs passés
+* en ligne de commande.
+*\param p1 de type \a player, correspondant au premier joueur.
+*\param p2 de type \a player, correspondant au second joueur.
+*\return Cette fonction renvoit le token du joueur victorieux, ou NOTHING si personne n'a gagné.
+*/
+token play(player p1, player p2) {
+    if(p1->player_kind==KEYBOARD) {
+        grid g ;
+        g=create_grid() ;
+        print_grid(g);
+        /* Compteur qui s'incrémente à chaque tour de jeu, et qui sert à déterminer si la grille est pleine */
+        int compteur=0 ; 
+        /* Retourner le jeton du vainqueur */
+        int token_winner=0 ; 
+        while(winner(g)==0&&compteur<42) {
+            int a ;
+            a = input(g,p1) ;
+            /* Input renvoit forcément un seul chiffre, et un seul, mais la vérification
+                >0 et <8 est inscrite ci après */
+            while(a<1||a>7) {
+                print_grid(g) ;
+                printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
+                a = input(g,p1) ;
+            }
+            if(a>0&&a<8) {
+                while(g->heights[a-1]==6) {
+                    print_grid(g) ;
+                    printf("Colonne pleine, choisissez en une autre !\n");
+                    a = input(g,p1) ;
+                }
+            }
+            put_token(g, a, p1->player_token) ;
+            /* On notifie le coup à l'autre joueur */
+            output(p2,a) ;
+            /* On incrémente le compteur de coups */
+            compteur = compteur + 1 ;
+            print_grid(g) ;
+            if(winner(g)==1) {
+                token_winner=p1->player_token ;
+            }
+            /* Cas où le nombre de coups maximal a été joué */
+            if(compteur==42) {
+                token_winner=NOTHING ;
+            }
+            if(winner(g)==0&&compteur<42) {
+                int b;
+                b = input(g,p2) ; 
+                /* Vérification de saisie ci dessous*/
+                while(b<1||b>7) {
+                    print_grid(g) ;
+                    printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
+                    b = input(g,p2) ;
+                }
+                if(b>0&&b<8) {
+                    while(g->heights[b-1]==6) {
+                        print_grid(g) ;
+                        printf("Colonne pleine, choisissez en une autre !\n");
+                        b = input(g,p2) ;
+                    }
+                }
+                put_token(g, b, p2->player_token) ;
+                output(p1,b) ;
+                compteur = compteur + 1 ;
+                print_grid(g);
+                if(winner(g)==1) {
+                    token_winner=p2->player_token ;
+                }
+                if(compteur==42) {
+                    token_winner=NOTHING ;
+                }               
+            }
+        }
+        /* On libère la mémoire ! */
+        free(g) ;
+        return(token_winner) ;
+    }
+    if(p1->player_kind==SERVER) {
+        grid g ;
+        g=create_grid() ;
+        print_grid(g);
+        int compteur=0 ;
+        int token_winner ;
+        while(winner(g)==0&&compteur<42) {
+            int a ;
+            a = input(g,p1) ;
+            /* Vérification de saisie ci dessous*/
+            while(a<1||a>7) {
+                print_grid(g) ;
+                printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
+                a = input(g,p1) ;
+            }
+            if(a>0&&a<8) {
+                while(g->heights[a-1]==6) {
+                    print_grid(g) ;
+                    printf("Colonne pleine, choisissez en une autre !\n");
+                    a = input(g,p1) ;
+                }
+            }
+            put_token(g, a, p1->player_token) ;
+            output(p2,a) ;
+            compteur = compteur + 1 ;
+            print_grid(g) ;
+            if(winner(g)==1) {
+                token_winner=p1->player_token ;
+            }
+            if(compteur==42) {
+                token_winner=NOTHING ;
+            }
+            if(winner(g)==0&&compteur<42) {
+                int b;
+                b = input(g,p2) ;
+                /* Vérification de saisie ci dessous*/
+                while(b<1||b>7) {
+                    print_grid(g) ;
+                    printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
+                    b = input(g,p2) ;
+                }
+                if(b>0&&b<8) {
+                    while(g->heights[b-1]==6) {
+                        print_grid(g) ;
+                        printf("Colonne pleine, choisissez en une autre !\n");
+                        b = input(g,p2) ;
+                    }
+                }
+                put_token(g, b, p2->player_token) ;
+                output(p1,b) ;
+                compteur = compteur + 1 ;
+                print_grid(g);
+                if(winner(g)==1) {
+                    token_winner=p2->player_token ;
+                }
+                if(compteur==42) {
+                    token_winner=NOTHING ;
+                }               
+            }
+        }
+        /* On libère la mémoire ! */
+        free(g) ;
+        return(token_winner) ;
+    }
+    if(p1->player_kind==CLIENT) {
+        grid g ;
+        g=create_grid() ;
+        print_grid(g);
+        int compteur=0 ;
+        int token_winner ;
+        while(winner(g)==0&&compteur<42) {
+            int a ;
+            a = input(g,p1) ;
+            /* Vérification de saisie ci dessous*/
+            while(a<1||a>7) {
+                print_grid(g) ;
+                printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
+                a = input(g,p1) ;
+            }
+            if(a>0&&a<8) {
+                while(g->heights[a-1]==6) {
+                    print_grid(g) ;
+                    printf("Colonne pleine, choisissez en une autre !\n");
+                    a = input(g,p1) ;
+                }
+            }
+            put_token(g, a, p1->player_token) ;
+            output(p2,a) ;
+            compteur = compteur + 1 ;
+            print_grid(g) ;
+            if(winner(g)==1) {
+                token_winner=p1->player_token ;
+            }
+            if(compteur==42) {
+                token_winner=NOTHING ;
+            }
+            if(winner(g)==0&&compteur<42) {
+                int b;
+                b = input(g,p2) ;
+                /* Vérification de saisie ci dessous*/
+                while(b<1||b>7) {
+                    print_grid(g) ;
+                    printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
+                    b = input(g,p2) ;
+                }
+                if(b>0&&b<8) {
+                    while(g->heights[b-1]==6) {
+                        print_grid(g) ;
+                        printf("Colonne pleine, choisissez en une autre !\n");
+                        b = input(g,p2) ;
+                    }
+                }
+                put_token(g, b, p2->player_token) ;
+                output(p1,b) ;
+                compteur = compteur + 1 ;
+                print_grid(g);
+                if(winner(g)==1) {
+                    token_winner=p2->player_token ;
+                }
+                if(compteur==42) {
+                    token_winner=NOTHING ;
+                }               
+            }
+        }
+        /* On libère la mémoire ! */
+        free(g) ;
+        return(token_winner) ;
+    }
+    if(p1->player_kind==IA) {
+        grid g ;
+        g=create_grid() ;
+        print_grid(g);
+        int compteur=0 ;
+        int token_winner ;
+        while(winner(g)==0&&compteur<42) {
+            int a ;
+            a = input(g,p1) ;
+            /* Vérification de saisie ci dessous*/
+            while(a<1||a>7) {
+                print_grid(g) ;
+                printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
+                a = input(g,p1) ;
+            }
+            if(a>0&&a<8) {
+                while(g->heights[a-1]==6) {
+                    print_grid(g) ;
+                    printf("Colonne pleine, choisissez en une autre !\n");
+                    a = input(g,p1) ;
+                }
+            }
+            put_token(g, a, p1->player_token) ;
+            output(p2,a) ;
+            compteur = compteur + 1 ;
+            print_grid(g) ;
+            if(winner(g)==1) {
+                token_winner=p1->player_token ;
+            }
+            if(compteur==42) {
+                token_winner=NOTHING ;
+            }
+            if(winner(g)==0&&compteur<42) {
+                int b;
+                b = input(g,p2) ;
+                /* Vérification de saisie ci dessous*/
+                while(b<1||b>7) {
+                    print_grid(g) ;
+                    printf("Choix hors colonne ou caractère incorrect, merci de recommencer\n") ;
+                    b = input(g,p2) ;
+                }
+                if(b>0&&b<8) {
+                    while(g->heights[b-1]==6) {
+                        print_grid(g) ;
+                        printf("Colonne pleine, choisissez en une autre !\n");
+                        b = input(g,p2) ;
+                    }
+                }
+                put_token(g, b, p2->player_token) ;
+                output(p1,b) ;
+                compteur = compteur + 1 ;
+                print_grid(g);
+                if(winner(g)==1) {
+                    token_winner=p2->player_token ;
+                }
+                if(compteur==42) {
+                    token_winner=NOTHING ;
+                }               
+            }
+        }
+        /* On libère la mémoire ! */
+        free(g) ;
+        return(token_winner) ;
+    }
+    else {
+        return(0) ;
     }
 }
 

@@ -1,6 +1,7 @@
 /**
 *\file struct.h
-*\details Ici sont défini les alias \a token , \a grid , \a player_kind , \a keyboard , 
+*\brief Structures globales introduites pour implémenter le jeu.
+*\details Ici sont défini les alias, enum et structures \a token , \a grid , \a player_kind , \a keyboard , 
 *\a server , \a client , \a player
 */
 
@@ -33,8 +34,10 @@ typedef enum { NOTHING, RED, YELLOW } token ;
 *\brief Structure représentant une grille de jeu de manière générale
 */
 typedef struct {
-    token table[LINE_NB][COLUMN_NB] ;
-    int heights[COLUMN_NB] ; 	
+	/**> Grille de jeu : tableau à deux dimensions */
+    token table[LINE_NB][COLUMN_NB] ; 
+    /**> Tableau à une dimension servant à savoir si une colonne est pleine ou non */
+    int heights[COLUMN_NB] ; 
 } grid_content, *grid ;
 
 /**
@@ -43,7 +46,9 @@ typedef struct {
 */
 typedef enum {KEYBOARD, CLIENT, SERVER, IA} player_kind ;
 
+/** Typedef pour désigner un clavier */
 typedef int keyboard;
+/** Typedef pour désigner la profondeur de l'IA */
 typedef int depth;
 
 /**
@@ -51,7 +56,9 @@ typedef int depth;
 *\brief Structure représentant un serveur
 */
 typedef struct {
+	/**> Entier, désignant le port d'entré du serveur, auquel pourront se connecter les clients */
 	int server_port ;
+	/**> Quantité de type server_connection , désignant la connexion du serveur (définie dans la librairie serveur) */
 	server_connection server_connection ; 
 } server;
 
@@ -60,24 +67,31 @@ typedef struct {
 *\brief Structure représentant un client
 */
 typedef struct {
+	/**> Nom du serveur auquel le client va se connecter */
 	char *client_host ; 
+	/**> Port du serveur auquel le client va se connecter */
 	int client_port ; 
+	/**> Quantité de type client_connection, désignant la connexion du client */
 	client_connection client_connection ;
 } client ;
 
 /**
-*\struct player
+*\struct player_type
 *\brief Structure représentant un joueur
 */
 typedef struct {
+	/**> Alias de type \a int, désignant le type de joueur, grace à l'ennum player_kind */
 	player_kind player_kind ; 
+	/**> Désigne le jeton joué par le joueur (NOTHING, RED, ou YELLOW) */
 	token player_token ; 
+	/**> Cette union représente le fait qu'un joueur puisse avoir plusieurs types. Dans ce cas, 
+	* on choisit le type adapté pour le joueur : un seul possible */
 	union {
 		client player_client ;
 		server player_server ;
 		keyboard player_keyboard ;
 		depth player_ia ;
 	} player_data ;
-} player_type,*player ;
+} player_type, *player ;
 
 #endif 

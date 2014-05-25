@@ -1,3 +1,11 @@
+/**
+*\file main.c
+*\brief main(), faisant la liaison entre toutes les fonctions pour permettre le jeu.
+*\details Ce fichier permet la gestion d'une partie, à l'aide de toutes les fonctions implémentées
+* dans les fichiers précédents.
+*/
+
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -59,6 +67,18 @@ int main(int argc, char *argv[]) {
         <p>De multiples ouvertures sont possibles : algorithmes génétiques pour améliorer l'IA, utilisation d'une interface graphique avec GTK, ... etc.</p>
     <hr>
 <h1>Historique des modifications</h1>
+    <h2>25 Mai 2012</h2>
+        <h3>Description des modifications</h3>
+            <p>Grosses modifications du code : structure séparée dans des dossiers, l'IA est désormais fonctionnelle avec l'algorithme MinMax (coupures Alpha
+            Beta) et tourne même avec des couleurs dans le terminal.</p>
+            <p>Quelques erreurs de fuite mémoire ont été corrigées en ajoutant des free.</p>
+            <p>La vérification des erreurs avec Valgrind en révèle 2 de majeures. Il s'agit d'une erreur dans l'allocation des structures : 
+            grid g = malloc(sizeof(grid_content)), et player p = malloc(sizeof(player_type)). Nous avions mis à la base des pointeurs sur struct, plutôt que des 
+            struct, ce qui explique les erreurs invalid read/write dans les fonctions de création de grille et de joueur.</p>
+        <h3>Commentaires</h3>
+            <p>L'IA est pour le moment encore faible, mais nous avons choisi de privilégier la propreté du code avant d'améliorer l'heuristique.</p>
+            <p>Il reste une erreur détectée dans Valgrind, lorsque on utilise une IA. Il signale une erreur : "Conditional jump or move depends on uninitialised 
+            value(s)", alors que le tableau (dans pond.c) est bien initialisé. Nous n'avons pas réussi à comprendre le problème.</p>
     <h2>28 Avril 2014</h2>
         <h3>Description des modifications</h3>
             <p>Finalisation complète de la partie client / serveur. Les fonctions input(), output() sont créés et play() est mise à jour. Des vérifications 

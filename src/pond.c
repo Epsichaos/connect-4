@@ -63,12 +63,9 @@ int where_play(grid g,int depth,token t) {
 	int i;
 	int BestMove=1000 ;
 	int tmp=1000 ;
-	char buf[7] ;
+	char buf[7] = { 0 } ;
 	int j=0 ;
 	int z ;
-	for(i=0;i<7;i++) {
-		buf[i] = 0 ;
-	}
 	for(i=1;i<8;i++) {
 		if(g->heights[i-1] != LINE_NB) {
 			put_token(g,i,t) ;
