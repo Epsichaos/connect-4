@@ -9,8 +9,7 @@
 #define STRUCT_H
 
 #include<stdio.h>
-#include"client-lib.h"
-#include"server-lib.h"
+#include"network-lib.h"
 
 /* Macros pour afficher les couleurs dans le terminal */
 #define clrscr() printf("\033[H\033[2J") /* fonction qui efface l'écran */

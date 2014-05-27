@@ -9,8 +9,7 @@
 #include<stdlib.h>
 #include"struct.h"
 #include"fonctions.h"
-#include"client-lib.h"
-#include"server-lib.h"
+#include"network-lib.h"
 
 /**
 *\brief Fonction create_keyboard, utilisée pour créer un joueur au clavier, sur la machine même
