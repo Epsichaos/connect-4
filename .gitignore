@@ -1,2 +1,3 @@
 bin/connect4.x
 doxygen/*
+obj/*
