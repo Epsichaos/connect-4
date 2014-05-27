@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 		printf("Erreur d'allocation dans le main !\n");
 		exit(EXIT_FAILURE) ;
 	}
-    /* Dans ce cas, il n'y a aucun paramètres de rentrés */
+    /* Dans ce cas, il n'y a aucun paramètre de rentré */
     if(argc==1) {
         couleur("31") ;
         printf("Erreur dans les paramètres, si vous avez besoin d'aide : ./connect4.x --help\n") ;
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
     <h2>Jeu fonctionnel puissance 4</h2>
         <p> La première partie consiste à programmer un jeu fonctionnel, permettant de jouer à deux sur la même machine, à tour de rôle.</p>
     <h2>Jeu en réseau, suivant l'architecture client/serveur</h2>
-        <p> La deuxième partie consister à utiliser la base de la partie 1, pour développer un système permettant de jouer à 2 joueurs, mais sur 2 machines différentes.
+        <p> La deuxième partie consistait à utiliser la base de la partie 1, pour développer un système permettant de jouer à 2 joueurs, mais sur 2 machines différentes.
         Il faudra alors mettre en place une communication client/serveur pour la gestion de la partie et des coups. Le serveur devant lire le coup que le client 
         souhaite jouer, pour ensuite appliquer la modification à la grille et renvoyer le résultat au client, puis lui-même jouer et renvoyer la grille au client 
         après modification et attendre alors l'action que celui-ci souhaite entreprendre, et ainsi de suite.</p>
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
             value(s)", alors que le tableau (dans pond.c) est bien initialisé. Nous n'avons pas réussi à comprendre le problème.</p>
     <h2>28 Avril 2014</h2>
         <h3>Description des modifications</h3>
-            <p>Finalisation complète de la partie client / serveur. Les fonctions input(), output() sont créés et play() est mise à jour. Des vérifications 
+            <p>Finalisation complète de la partie client / serveur. Les fonctions input(), output() sont créées et play() est mise à jour. Des vérifications 
             mineures restent toujours à faire dans certains cas, mais la base est posée, le programme est parfaitement fonctionnel pour un jeu en réseau.</p>
             <p>Poursuite des commentaires dans les nouvelles fonctions, corrections mineures (voir le repot git et la description des commits pour plus de
             détails).</p>
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
             <p>Mise en forme du code pour la nouvelle version de la doc. Les fonctions essentielles sont regroupées dans core.c et create_something.c.</p>
             <p>Ajout d'un Makefile général, avec fonction de clean auto, de génération de documentation Doxygen (commande 'make doxy'), et de compilation de documentation
             latex.</p>
-            <p>Ajout d'un repot git pour pouvoir travailler à plusieurs et pour synchroniser en live le code source sur mon ordinateur avec mon compte à l'ENSTA. Ce qui nous
+            <p>Ajout d'un repot git pour pouvoir travailler à plusieurs et pour synchroniser en live le code source sur mon ordinateur avec mon compte à l'ENSTA, ce qui nous
             permet d'éviter une utilisation redondante de SCP.</p>
         <h3>Programmes créés</h3>
             <ul>

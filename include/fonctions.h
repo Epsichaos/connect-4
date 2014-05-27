@@ -29,9 +29,10 @@ void output(player, int) ;
 void detect(int,char**,player*) ;
 void deconnexion(player, player) ;
 
-int pond(grid) ; // EN COURS DE DEV POUR L'ALPHA BETA
-int alphabeta(grid, int, int, int, token) ; // EN COURS DE DEV POUR L'ALPHA BETA
-int where_play(grid ,int ,token) ; // EN COURS DE DEV
+int pond(grid) ;
+int alphabeta(grid, int, int, int, token) ;
+int where_play(grid ,int ,token) ; 
+int winner3(grid) ;
 
 void help(void) ;
 

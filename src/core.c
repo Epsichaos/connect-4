@@ -19,7 +19,7 @@ déterminer la victoire, ...etc.
 
 /**
 *\brief Fonction create_grid, utilisée pour générer une grille de Puissance 4
-*\details Cette fonction permet au main, ou a posteriori à la fonction play{} de créer une grille de jeu.
+*\details Cette fonction permet au main, ou a posteriori à la fonction \a play de créer une grille de jeu.
 *\return g de type grid : c'est la grille créé par create_grid.
 */
 grid create_grid() {
@@ -43,13 +43,13 @@ grid create_grid() {
     for(k=0;k<COLUMN_NB;k++) {
         grille->heights[k]=0; 
     }
-    /* On retourne la grille ainsi créé, de type grid, qui est entièrement vide pour le moment */
+    /* On retourne la grille ainsi créée, de type grid, qui est entièrement vide pour le moment */
     return(grille); 
 }
 
 /**
 *\brief Fonction print_grid, utilisée pour afficher une grille de Puissance 4
-*\details Cette fonction permet au main, ou a posteriori à la fonction \a play{} d'afficher une grille de jeu dans le terminal
+*\details Cette fonction permet au main, ou a posteriori à la fonction \a play d'afficher une grille de jeu dans le terminal
 *\param g grille (\a grid) que l'on souhaite afficher
 */
 void print_grid(grid g) {
@@ -97,14 +97,14 @@ void print_grid(grid g) {
 
 /**
 *\brief Fonction put_token, utilisée pour mettre un jeton dans la grille
-*\details Cette fonction permet au main, ou a posteriori à la fonction play{} de déposer 
-*un jeton \a t (t=RED ou t=YELLOW) dans la colonne \a column de la 
-*grille \a g. Il n'y a pas de test dans la fonction put_token(), ils sont situés dans la fonction
-*input(). (Permet d'alléger le corps de put_token()) 
+*\details Cette fonction permet au main, ou a posteriori à la fonction \a play de déposer 
+un jeton \a t (t=RED ou t=YELLOW) dans la colonne \a column de la 
+grille \a g. Il n'y a pas de test dans la fonction put_token(), ils sont situés dans la fonction
+input(). (Permet d'alléger le corps de put_token()) 
 *\param g grille (\a grid) dans laquelle on joue
 *\param column entier (\a int) désignant la colonne dans laquelle le jeton est lâché
 *\param t paramètre de type \a token pouvant prendre trois valeurs : \a RED , \a YELLOW ou \a NOTHING, 
-*désignant la couleur des jetons (\a RED , \a YELLOW et \a
+désignant la couleur des jetons (\a RED , \a YELLOW et \a
 NOTHING sont des alias de type \a int)
 */
 int put_token(grid g, int column, token t) {
@@ -122,10 +122,10 @@ int put_token(grid g, int column, token t) {
 
 /**
 *\brief Fonction erase_token, utilisée pour mettre un jeton dans la grille
-*\details Cette fonction permet au main, ou a posteriori à la fonction play{} de déposer 
-*un jeton \a t (t=RED ou t=YELLOW) dans la colonne \a column de la 
-*grille \a g. De la même manière que pour put_token, erase_token ne contient aucun test, car elle est utilisée pour enlever un jeton 
-*après qu'on l'ai posé avec la fonction where_play. Les colonnes ne seront donc jamais vides, donc inutile d'insérer des tests
+*\details Cette fonction permet au main, ou a posteriori à la fonction \a play de déposer 
+un jeton \a t (t=RED ou t=YELLOW) dans la colonne \a column de la 
+grille \a g. De la même manière que pour put_token, erase_token ne contient aucun test, car elle est utilisée pour enlever un jeton 
+après qu'on l'ai posé avec la fonction where_play. Les colonnes ne seront donc jamais vides, donc inutile d'insérer des tests
 *\param g grille (\a grid) dans laquelle on joue
 *\param column entier (\a int) désignant la colonne dans laquelle le jeton est supprimé.
 */
@@ -144,12 +144,12 @@ void erase_token(grid g, int column) {
 /**
 *\brief Fonction winner, utilisée pour tester si une grille est gagnante
 *\details Cette fonction permet, en prenant une grille en fonction, de savoir si 
-*une configuration gagnante est présente ou non (respectant les normes de victoire)
-*relatives aux règles en vigueur dans le puissance 4. Cette fonction n'est pas optimale, puisque elle teste
-*toute la grille, mais nous avons préféré simplifier son expression, plutôt qu'utiliser l'astuce : winner(grid g, int column), où column
-*est la dernière colonne dans laquelle on a jouer. Dans ce cas, on aurait pu enlever la double boucle for, pour effectuer les mêmes conditions, 
-*(toutes les 8), mais seulement sur une SEULE case, la dernière dans laquelle on a jouée. Faire cette modification est assez facile, mais le gain
-*en temps de traitement sera imperceptible, nous avons donc décidé de garder celle-ci !
+une configuration gagnante est présente ou non (respectant les normes de victoire)
+relatives aux règles en vigueur dans le puissance 4. Cette fonction n'est pas optimale, puisque elle teste
+toute la grille, mais nous avons préféré simplifier son expression, plutôt qu'utiliser l'astuce : winner(grid g, int column), où column
+est la dernière colonne dans laquelle on a joué. Dans ce cas, on aurait pu enlever la double boucle for, pour effectuer les mêmes conditions, 
+(toutes les 8), mais seulement sur une SEULE case, la dernière dans laquelle on a jouée. Faire cette modification est assez facile, mais le gain
+en temps de traitement sera imperceptible, nous avons donc décidé de garder celle-ci !
 *\param g grille de type \a grid 
 */
 int winner(grid g) {
@@ -292,7 +292,7 @@ int winner(grid g) {
 /**
 *\brief Fonction \a input , utlisée pour recevoir l'action de jeu de l'autre joueur.
 *\details Cette fonction permet de recevoir un message du client (ou du serveur, 
-*selon le type de joueur en entrée), correspondant au coup que celui-ci veut jouer.
+selon le type de joueur en entrée), correspondant au coup que celui-ci veut jouer.
 *\param p paramètre de type \a player , structure définie dans struct.h.
 *\return Un entier, correspondant au numéro de colonne dans laquelle le joueur souhaite déposer un jeton.
 */
@@ -337,7 +337,7 @@ int input(grid g, player p) {
         a = where_play(g,p->player_data.player_ia,p->player_token) ;
         return(a) ;
     }
-    /* Ne sera normalement jamais empruntée */
+    /* Ne sera normalement jamais empruntée, juste pour éviter le warning à la compilation */
     else {
         return(0) ;
     }
@@ -346,9 +346,9 @@ int input(grid g, player p) {
 /**
 *\brief Fonction \a output , utlisée pour envoyer l'action de jeu à l'autre joueur.
 *\details Cette fonction permet d'envoyer un message au client (ou au serveur), contenant 
-*un entier désignant la colonne dans lequel le joueur en argument (et envoyant le message) 
-*souhaite lâcher un jeton. Elle ne contient aucune vérification car elle est utilisée a posteriori, après toutes
-*les vérifications faites dans input().
+un entier désignant la colonne dans lequel le joueur en argument (et envoyant le message) 
+souhaite lâcher un jeton. Elle ne contient aucune vérification car elle est utilisée a posteriori, après toutes
+les vérifications faites dans input().
 *\param p paramètre de type \a player , structure définie dans struct.h.
 *\param col_ind entier, désignant la colonne dans laquelle on souhaite lâcher le jeton.
 */
@@ -408,11 +408,11 @@ void deconnexion(player p1, player p2) {
 /**
 *\brief Fonction \a detect, qui sert à détecter les paramètres entrés sur la ligne de commande
 *\details Cette fonction permet de gérer tous les cas de paramètres sur ligne de commande, et de réagir 
-* en conséquence (fonction d'aide, message d'erreurs, ...etc).
+en conséquence (fonction d'aide, messages d'erreurs, ...etc).
 *\param argc le paramètre de type \a int en argument du main() (donne le nombre de paramètres passés en ligne de commande).
 *\param argv de type \a char** , tableau en argument du main() contenant tous les paramètres passés en lige de commande.
 *\param joueurs de type \player* : structre pouvant contenir 2 player. On utilise le passage par adresse pour le remplir, 
-* du coup, cette fonction ne renvoit rien (\a void).
+du coup, cette fonction ne renvoit rien (\a void).
 *\return Cette fonction ne retourne rien, le passage par adresse permet de s'affranchir d'un retour de type \a player*
 */
 void detect(int argc, char *argv[],player* joueurs) {
@@ -439,7 +439,7 @@ void detect(int argc, char *argv[],player* joueurs) {
         exit(EXIT_FAILURE) ;
     }
     for(i=1; i<argc;i++) {
-        /* Si on détecte l'IA, on crée un joueur de type IA avec la fonction correspondante */
+        /* Si on détecte l'IA, on créé un joueur de type IA avec la fonction correspondante */
         if(strcmp(argv[i],"-ia")==0) { 
             /* On incrémente le nombre de joueurs */
             nb_joueurs = nb_joueurs + 1 ; 
@@ -487,7 +487,7 @@ void detect(int argc, char *argv[],player* joueurs) {
         }
         /* Création d'un joueur de type client. Ici pas de vérification à faire, si le client entre mal les " coordonnées " 
         du serveur, c'est de sa faute, on ne peut contrôler cette variable (le numéro de port et nom d'hôte changeant en
-        permanence*/
+        permanence)*/
         if(strcmp(argv[i],"-client")==0) {
             nb_joueurs = nb_joueurs + 1 ; 
             joueurs[nb_joueurs] = create_client(NOTHING,argv[i+1],atoi(argv[i+2])) ;
@@ -523,7 +523,7 @@ void detect(int argc, char *argv[],player* joueurs) {
 /**
 *\brief Fonction \a play, qui sert à jouer de manière générique
 *\details Cette fonction permet de lancer une partie de manière totalement indépendante du type des joueurs passés
-* en ligne de commande.
+en ligne de commande.
 *\param p1 de type \a player, correspondant au premier joueur.
 *\param p2 de type \a player, correspondant au second joueur.
 *\return Cette fonction renvoit le token du joueur victorieux, ou NOTHING si personne n'a gagné.

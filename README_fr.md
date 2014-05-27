@@ -28,13 +28,13 @@ Exemples :
 -------------
 
 	./connect4.x -keyboard -keyboard
-	./connect4.x -keyboard -server -host_port
-	./connect4.x -client -host_name -host_port -keyboard
-	./connect4.x -keyboard -ia -ia_depth
+	./connect4.x -keyboard -server -1200
+	./connect4.x -client tesseract -1200 -keyboard
+	./connect4.x -keyboard -ia 4
 
 Aide :
 -------------
 
-Pour toute autre information, lancez juste :
+Pour toute autre information :
 
 	./connect4.x --help

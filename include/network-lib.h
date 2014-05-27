@@ -1,5 +1,5 @@
-/*! 
-*\file server-lib.h
+/**
+*\file network-lib.h
 *\brief Bibliothèque des fonctions relatives serveur
 *\details Contient l'ensemble des déclarations de fonctions relatives aux actions des clients
 */
