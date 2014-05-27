@@ -61,6 +61,7 @@ run:
 
 doxy:
 	@doxygen
+	@echo "Documentation Doxygen générée"
 
 help:
 	@echo "'make' : Compilation du Programme"
