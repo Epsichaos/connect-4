@@ -17,12 +17,16 @@
 
 #define error(args...) do { fprintf(stderr, args); exit(1); } while(0);
 
+/**
+*\struct _server_connection
+*\brief Structure servant à représenter la connexion serveur.
+*/
 struct _server_connection {
   int socket_desc;
   int new_socket;
 };
 
-/*!
+/**
 *\details Fonction d'ouverture de connexion du serveur
 *\param port paramètre de type \a int , qui est le numéro du port que l'on ouvre pour le client
 *\return renvoit un objet de type \a server_connection, alias d'une struct définie dans struct.h représentant la connexion ouverte du serveur
@@ -60,7 +64,7 @@ server_connection server_open_connection(int port){
   return sc;
 }
 
-/*!
+/**
 *\details Fonction d'envoi de message du serveur au client
 *\param sc paramètre de type \a server_connection , représentant la connexion ouverte client/serveur
 *\param msg paramètre de type \a char* qui contient le message à envoyer au serveur
@@ -71,7 +75,7 @@ void server_send_message(server_connection sc, const char *msg){
   send(sc->new_socket, "\n", 1, 0);
 }
 
-/*!
+/**
 *\details Fonction de réception du message du client
 *\param sc paramètre de type \a server_connection , représentant la connexion ouverte client/serveur
 *\param buf paramètre de type \a char* buffer dans lequel on va stocker le message du serveur
@@ -105,6 +109,7 @@ void server_close_connection(server_connection sc){
 
 /**
 *\struct _client_connection
+*\brief Structure servant à représenter la connexion client.
 */
 struct _client_connection {
   int socket_desc;

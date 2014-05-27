@@ -93,12 +93,14 @@ void print_grid(grid g) {
     printf(" _  _  _  _  _  _  _ \n");
     couleur("0") ;
     printf("\n");
-} 
+}
+
 /**
 *\brief Fonction put_token, utilisée pour mettre un jeton dans la grille
 *\details Cette fonction permet au main, ou a posteriori à la fonction play{} de déposer 
 *un jeton \a t (t=RED ou t=YELLOW) dans la colonne \a column de la 
-grille \a g
+*grille \a g. Il n'y a pas de test dans la fonction put_token(), ils sont situés dans la fonction
+*input(). (Permet d'alléger le corps de put_token()) 
 *\param g grille (\a grid) dans laquelle on joue
 *\param column entier (\a int) désignant la colonne dans laquelle le jeton est lâché
 *\param t paramètre de type \a token pouvant prendre trois valeurs : \a RED , \a YELLOW ou \a NOTHING, 
@@ -106,21 +108,32 @@ grille \a g
 NOTHING sont des alias de type \a int)
 */
 int put_token(grid g, int column, token t) {
-    /* Il n'y a pas de test dans la fonction put_token(), ils sont situés dans la fonction
-    input(). (Permet d'alléger le corps de put_token()) */
+    /* On décrémente l'indice de colonne, car la colonne 0 de grid correspond à la colonne 1 affichée à l'écran, ... etc.  */
     column=column-1;
+    /* Petite 'astuce' pour simplifier les expressions mises en jeu */
     int nb ;
     nb = g->heights[column] ;
+    /* On incrémente l'indice de colonne avant d'ajouter le jeton */
     g->heights[column]=g->heights[column] +1 ;
+    /* On ajoute le jeton */
     g->table[5-nb][column]=t ;
     return(0);
 }
 
+/**
+*\brief Fonction erase_token, utilisée pour mettre un jeton dans la grille
+*\details Cette fonction permet au main, ou a posteriori à la fonction play{} de déposer 
+*un jeton \a t (t=RED ou t=YELLOW) dans la colonne \a column de la 
+*grille \a g. De la même manière que pour put_token, erase_token ne contient aucun test, car elle est utilisée pour enlever un jeton 
+*après qu'on l'ai posé avec la fonction where_play. Les colonnes ne seront donc jamais vides, donc inutile d'insérer des tests
+*\param g grille (\a grid) dans laquelle on joue
+*\param column entier (\a int) désignant la colonne dans laquelle le jeton est supprimé.
+*/
 void erase_token(grid g, int column) {
-    /* Pareil que pour put_token, erase_token ne contient aucun test, car elle est utilisée pour enlever un jeton 
-    après qu'on l'ai posé avec la fonction where_play. Les colonnes ne seront donc jamais vides, donc inutile d'insérer des tests */
+    /* On décrémente l'indice de colonne, car la colonne 0 de grid correspond à la colonne 1 affichée à l'écran, ... etc.  */
     column=column-1;
     int nb ;
+    /* Petite 'astuce' pour simplifier les expressions mises en jeu */
     nb = g->heights[column] ;
     /* On efface le jeton en mettant NOTHING à la place */
     g->table[6-nb][column]=NOTHING ;
@@ -404,6 +417,7 @@ void deconnexion(player p1, player p2) {
 */
 void detect(int argc, char *argv[],player* joueurs) {
     int nb_joueurs = 0 ;
+    int compteur = 0 ;
     int i ;
     /* Cas où la fonction --help est demandée, on affiche l'aide */
     if(strcmp(argv[1],"--help")==0) {
@@ -412,6 +426,18 @@ void detect(int argc, char *argv[],player* joueurs) {
         free(joueurs) ;
         exit(EXIT_SUCCESS) ;
     }
+    for(i=0; i<argc ; i++) {
+        if(strcmp(argv[i],"-ia")==0||strcmp(argv[i],"-client")==0||strcmp(argv[i],"-server")==0||strcmp(argv[i],"-keyboard")==0) {
+            compteur = compteur + 1 ;
+        }
+    }
+    if(compteur!=2) {
+        couleur("31") ;
+        printf("Nombre de joueurs incorrect ! \n") ;
+        couleur("0") ;
+        free(joueurs) ;
+        exit(EXIT_FAILURE) ;
+    }
     for(i=1; i<argc;i++) {
         /* Si on détecte l'IA, on crée un joueur de type IA avec la fonction correspondante */
         if(strcmp(argv[i],"-ia")==0) { 
@@ -419,7 +445,9 @@ void detect(int argc, char *argv[],player* joueurs) {
             nb_joueurs = nb_joueurs + 1 ; 
             /* Condition pour gérer le cas où on ne met rien après l'IA */
             if(i==argc-1) { 
+                couleur("31") ;
                 printf("Erreur, il manque la profondeur de l'IA\n") ; 
+                couleur("0") ;
                 /* On libère la mémoire, vu qu'on ne joue pas ! */
                 free(joueurs) ;
                 exit(EXIT_FAILURE) ;
@@ -443,7 +471,9 @@ void detect(int argc, char *argv[],player* joueurs) {
             }
             /* Sinon, il y a une erreur de saisie */
             else {
+                couleur("31") ;
                 printf("Erreur, le caractère entré après l'IA n'est pas un chiffre, ou est un chiffre < 1\n") ;
+                couleur("0") ;
                 /* On libère la mémoire, vu qu'on ne joue pas ! */
                 free(joueurs) ;
                 exit(EXIT_FAILURE) ;
@@ -466,7 +496,9 @@ void detect(int argc, char *argv[],player* joueurs) {
         if(strcmp(argv[i],"-server")==0) {
             nb_joueurs = nb_joueurs + 1 ; 
             if(i==argc-1) { 
+                couleur("31") ;
                 printf("Erreur, il manque le numéro de port du serveur !\n") ; 
+                couleur("0") ;
                 /* On libère la mémoire, vu qu'on ne joue pas ! */
                 free(joueurs) ;
                 exit(EXIT_FAILURE) ;
@@ -477,18 +509,14 @@ void detect(int argc, char *argv[],player* joueurs) {
             }
             else {
                 /* Message d'erreur */
+                couleur("31") ;
                 printf("Entrez un numéro de port compris à 4 chiffres, ou numéro de port incorrect\n") ;
+                couleur("0") ;
                 /* On libère la mémoire */
                 free(joueurs) ;
                 exit(EXIT_FAILURE) ;
             }
         }   
-    }
-    if(nb_joueurs!=2) {
-        printf("Erreur dans le nombre de joueurs (ou leur synthaxe) passés en ligne de commande\n") ;
-        /* On libère la mémoire, vu qu'on ne joue pas ! */
-        free(joueurs) ;
-        exit(EXIT_FAILURE) ;
     }
 }
 

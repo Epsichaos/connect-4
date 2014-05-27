@@ -22,7 +22,9 @@ int main(int argc, char *argv[]) {
 	}
     /* Dans ce cas, il n'y a aucun paramètres de rentrés */
     if(argc==1) {
-        printf("Erreur dans les pamatères, si vous avez besoin d'aide, lancez ./connect4.x --help\n") ;
+        couleur("31") ;
+        printf("Erreur dans les paramètres, si vous avez besoin d'aide : ./connect4.x --help\n") ;
+        couleur("0") ;
         free(joueurs) ;
         exit(EXIT_FAILURE) ;
     }
