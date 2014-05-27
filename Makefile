@@ -42,7 +42,7 @@ $(EXE_PATH)/$(PRODUCT): $(OBJ)
 
 clean:
 	rm -rf *~
-	rm -rf .DS_Store
+	rm -rf .DS_Store # Erase the .DS_Store created on Mac OS
 	@echo "Nettoyage des fichiers temporaires et des .DS_Store effectué." 
 	@echo "Entrer 'make mrproper' pour nettoyer les fichiers obj."
 
