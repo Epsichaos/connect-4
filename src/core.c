@@ -3,7 +3,7 @@
 *\brief Ensemble des fonctions de base
 *\details Contient l'ensemble des fonctions utiles au déroulement d'une partie, comme la 
 *génération et l'affichage de grille, l'algorithme d'analyse de grille pour 
-déterminer la victoire, ...etc.
+déterminer la victoire, et toutes les autres.
 */
 
 #include<stdio.h>
@@ -121,11 +121,11 @@ int put_token(grid g, int column, token t) {
 }
 
 /**
-*\brief Fonction erase_token, utilisée pour mettre un jeton dans la grille
-*\details Cette fonction permet au main, ou a posteriori à la fonction \a play de déposer 
-un jeton \a t (t=RED ou t=YELLOW) dans la colonne \a column de la 
-grille \a g. De la même manière que pour put_token, erase_token ne contient aucun test, car elle est utilisée pour enlever un jeton 
-après qu'on l'ai posé avec la fonction where_play. Les colonnes ne seront donc jamais vides, donc inutile d'insérer des tests
+*\brief Fonction erase_token, utilisée pour effacer un jeton de la grille
+*\details Cette fonction permet au main, ou a posteriori à la fonction \a play d'enlever un jeton \a t (t=RED ou t=YELLOW) de
+ la colonne \a column de la  grille \a g. De la même manière que pour put_token, erase_token ne contient aucun test, car 
+ elle est utilisée pour enlever un jeton après qu'on l'ai posé avec la fonction where_play. Les colonnes ne seront donc 
+ jamais vides, donc inutile d'insérer des tests.
 *\param g grille (\a grid) dans laquelle on joue
 *\param column entier (\a int) désignant la colonne dans laquelle le jeton est supprimé.
 */
@@ -142,7 +142,7 @@ void erase_token(grid g, int column) {
 }
 
 /**
-*\brief Fonction winner, utilisée pour tester si une grille est gagnante
+*\brief Fonction winner, utilisée pour tester si une grille est gagnante.
 *\details Cette fonction permet, en prenant une grille en fonction, de savoir si 
 une configuration gagnante est présente ou non (respectant les normes de victoire)
 relatives aux règles en vigueur dans le puissance 4. Cette fonction n'est pas optimale, puisque elle teste
@@ -168,7 +168,7 @@ int winner(grid g) {
                 while(k!=6&&increment<3) { 
                     k=k+1 ;
                     increment=increment+1 ;
-                    /* Si la case suivant est la même que celle d'origine, on compte */
+                    /* Si la case suivante est la même que celle d'origine, on compte */
                     if(g->table[i][k]==caase) {
                     win1=win1+1 ;
                     }
@@ -180,7 +180,7 @@ int winner(grid g) {
                 int win2=0 ;
                 k=j ;
                 increment=0 ;
-                /* test de l'horizontale gauche */
+                /* test de l'horizontale gauche, le principe reste le même pour les autres commentaires */
                 while(k!=0&&increment<3) { 
                     k=k-1 ;
                     increment=increment+1 ;
@@ -302,13 +302,13 @@ int input(grid g, player p) {
         char nombre[LENGTH] ;
         printf("Joueur %d, indique ton numéro de colonne :\n",p->player_token);
         fgets(nombre,LENGTH,stdin) ;
-        /* Test pour savoir si le caractère est bien un chiffre entre 1 et 7*/
+        /* Test pour savoir si le caractère est bien un chiffre entre 1 et 7 */
         while(strlen(nombre)>2||isdigit(nombre[0])==0||nombre[0]=='0'||nombre[0]=='8'||nombre[0]=='9'||g->heights[atoi(nombre)-1]==6) {
             print_grid(g) ;
             printf("Saisie incorrecte (colonne pleine ou caractère non conforme), Joueur %d, indique ton numéro de colonne :\n",p->player_token) ;
             fgets(nombre,LENGTH,stdin) ;
         }
-        /* On converti la chaîne de caractère en entier */
+        /* On converti la chaîne de caractères en entier */
         int a = atoi(nombre) ;
         return(a) ;
     }
@@ -316,7 +316,9 @@ int input(grid g, player p) {
     if(p->player_kind==CLIENT) {
         int a ;
         char buf[LENGTH] ;
+        /* On affiche un message d'attente */
         printf("L'autre joueur est en train de réfléchir... \n") ;
+        /* On attends le message de l'autre joueur */
         client_receive_message(p->player_data.player_client.client_connection, buf, LENGTH) ;
         a=atoi(buf) ;
         return(a) ;
@@ -325,7 +327,9 @@ int input(grid g, player p) {
     if(p->player_kind==SERVER) {
         int a ;
         char buf[LENGTH] ;
+        /* On affiche un message d'attente */
         printf("L'autre joueur est en train de réfléchir... \n") ;
+        /* On attends le message de l'autre joueur */
         server_receive_message(p->player_data.player_server.server_connection, buf, LENGTH) ;
         a=atoi(buf) ;
         return(a) ;
@@ -376,7 +380,8 @@ void output(player p, int col_ind) {
 
 /**
 *\brief Fonction \a deconnexion , utlisée pour fermer proprement la connexion client/server à la fin de la partie
-*\details Cette fonction permet de déconnecter proprement en premier le client, puis le serveur.
+*\details Cette fonction permet de déconnecter proprement en premier le client, puis le serveur (ajout de sleep pour
+palier au bug des sockets).
 *\param p1 paramètre de type \a player , structure définie dans struct.h.
 *\param p2 paramètre de type \a player , structure définie dans struct.h.
 *\return Cette fonction ne retourne rien, elle affiche juste les confirmations de déconnexion à l'écran.
@@ -426,15 +431,19 @@ void detect(int argc, char *argv[],player* joueurs) {
         free(joueurs) ;
         exit(EXIT_SUCCESS) ;
     }
+    /* On compte le nombre de joueurs passé en ligne de commande */
     for(i=0; i<argc ; i++) {
         if(strcmp(argv[i],"-ia")==0||strcmp(argv[i],"-client")==0||strcmp(argv[i],"-server")==0||strcmp(argv[i],"-keyboard")==0) {
             compteur = compteur + 1 ;
         }
     }
+    /* S'il n'y a pas exactement 2 joueurs, on arrête et on affiche un message d'erreur */
     if(compteur!=2) {
+        /* Message d'erreur */
         couleur("31") ;
         printf("Nombre de joueurs incorrect ! \n") ;
         couleur("0") ;
+        /* On libère la mémoire, vu qu'on ne joue pas ! */
         free(joueurs) ;
         exit(EXIT_FAILURE) ;
     }
@@ -445,6 +454,7 @@ void detect(int argc, char *argv[],player* joueurs) {
             nb_joueurs = nb_joueurs + 1 ; 
             /* Condition pour gérer le cas où on ne met rien après l'IA */
             if(i==argc-1) { 
+                /* Message d'erreur */
                 couleur("31") ;
                 printf("Erreur, il manque la profondeur de l'IA\n") ; 
                 couleur("0") ;
@@ -463,6 +473,7 @@ void detect(int argc, char *argv[],player* joueurs) {
                     joueurs[nb_joueurs] = create_ia(NOTHING,atoi(argv[i+1])) ;
                 }
                 else {
+                /* Message d'erreur */
                 printf("Erreur, le caractère entré après l'IA est un chiffre > 99\n") ;
                 /* On libère la mémoire, vu qu'on ne joue pas ! */
                 free(joueurs) ;
@@ -471,6 +482,7 @@ void detect(int argc, char *argv[],player* joueurs) {
             }
             /* Sinon, il y a une erreur de saisie */
             else {
+                /* Message d'erreur */
                 couleur("31") ;
                 printf("Erreur, le caractère entré après l'IA n'est pas un chiffre, ou est un chiffre < 1\n") ;
                 couleur("0") ;
@@ -496,6 +508,7 @@ void detect(int argc, char *argv[],player* joueurs) {
         if(strcmp(argv[i],"-server")==0) {
             nb_joueurs = nb_joueurs + 1 ; 
             if(i==argc-1) { 
+                /* Message d'erreur */
                 couleur("31") ;
                 printf("Erreur, il manque le numéro de port du serveur !\n") ; 
                 couleur("0") ;
@@ -529,7 +542,8 @@ en ligne de commande.
 *\return Cette fonction renvoit le token du joueur victorieux, ou NOTHING si personne n'a gagné.
 */
 token play(player p1, player p2) {
-    if(p1->player_kind==KEYBOARD) {
+    /* Cas où le premier joueur est un keyboard ou ia ou server ou client (dans tous les cas...) */
+    if(p1->player_kind==KEYBOARD||p1->player_kind==IA||p1->player_kind==CLIENT||p1->player_kind==SERVER) {
         grid g ;
         g=create_grid() ;
         print_grid(g);
@@ -539,7 +553,9 @@ token play(player p1, player p2) {
         int token_winner=0 ; 
         while(winner(g)==0&&compteur<42) {
             int a ;
+            /* On attends le coup du joueur */
             a = input(g,p1) ;
+            /* On joue le coup */
             put_token(g, a, p1->player_token) ;
             /* On notifie le coup à l'autre joueur */
             output(p2,a) ;
@@ -553,13 +569,19 @@ token play(player p1, player p2) {
             if(compteur==42) {
                 token_winner=NOTHING ;
             }
+            /* Si la grille n'est pas pleine et que le joueur 1 n'a pas gagné, c'est au joueur 2 de jouer ! */
             if(winner(g)==0&&compteur<42) {
                 int b;
+                /* On attends le coup du joueur */
                 b = input(g,p2) ; 
+                /* On joue le coup */
                 put_token(g, b, p2->player_token) ;
+                /* On notifie le coup à l'autre joueur */
                 output(p1,b) ;
+                /* On incrémente le compteur de coups */
                 compteur = compteur + 1 ;
                 print_grid(g);
+                /* En cas de victoire, ou si la grille est pleine */
                 if(winner(g)==1) {
                     token_winner=p2->player_token ;
                 }
@@ -572,120 +594,7 @@ token play(player p1, player p2) {
         free(g) ;
         return(token_winner) ;
     }
-    if(p1->player_kind==SERVER) {
-        grid g ;
-        g=create_grid() ;
-        print_grid(g);
-        int compteur=0 ;
-        int token_winner ;
-        while(winner(g)==0&&compteur<42) {
-            int a ;
-            a = input(g,p1) ;
-            put_token(g, a, p1->player_token) ;
-            output(p2,a) ;
-            compteur = compteur + 1 ;
-            print_grid(g) ;
-            if(winner(g)==1) {
-                token_winner=p1->player_token ;
-            }
-            if(compteur==42) {
-                token_winner=NOTHING ;
-            }
-            if(winner(g)==0&&compteur<42) {
-                int b;
-                b = input(g,p2) ;
-                put_token(g, b, p2->player_token) ;
-                output(p1,b) ;
-                compteur = compteur + 1 ;
-                print_grid(g);
-                if(winner(g)==1) {
-                    token_winner=p2->player_token ;
-                }
-                if(compteur==42) {
-                    token_winner=NOTHING ;
-                }               
-            }
-        }
-        /* On libère la mémoire ! */
-        free(g) ;
-        return(token_winner) ;
-    }
-    if(p1->player_kind==CLIENT) {
-        grid g ;
-        g=create_grid() ;
-        print_grid(g);
-        int compteur=0 ;
-        int token_winner ;
-        while(winner(g)==0&&compteur<42) {
-            int a ;
-            a = input(g,p1) ;
-            put_token(g, a, p1->player_token) ;
-            output(p2,a) ;
-            compteur = compteur + 1 ;
-            print_grid(g) ;
-            if(winner(g)==1) {
-                token_winner=p1->player_token ;
-            }
-            if(compteur==42) {
-                token_winner=NOTHING ;
-            }
-            if(winner(g)==0&&compteur<42) {
-                int b;
-                b = input(g,p2) ;
-                put_token(g, b, p2->player_token) ;
-                output(p1,b) ;
-                compteur = compteur + 1 ;
-                print_grid(g);
-                if(winner(g)==1) {
-                    token_winner=p2->player_token ;
-                }
-                if(compteur==42) {
-                    token_winner=NOTHING ;
-                }               
-            }
-        }
-        /* On libère la mémoire ! */
-        free(g) ;
-        return(token_winner) ;
-    }
-    if(p1->player_kind==IA) {
-        grid g ;
-        g=create_grid() ;
-        print_grid(g);
-        int compteur=0 ;
-        int token_winner ;
-        while(winner(g)==0&&compteur<42) {
-            int a ;
-            a = input(g,p1) ;
-            put_token(g, a, p1->player_token) ;
-            output(p2,a) ;
-            compteur = compteur + 1 ;
-            print_grid(g) ;
-            if(winner(g)==1) {
-                token_winner=p1->player_token ;
-            }
-            if(compteur==42) {
-                token_winner=NOTHING ;
-            }
-            if(winner(g)==0&&compteur<42) {
-                int b;
-                b = input(g,p2) ;
-                put_token(g, b, p2->player_token) ;
-                output(p1,b) ;
-                compteur = compteur + 1 ;
-                print_grid(g);
-                if(winner(g)==1) {
-                    token_winner=p2->player_token ;
-                }
-                if(compteur==42) {
-                    token_winner=NOTHING ;
-                }               
-            }
-        }
-        /* On libère la mémoire ! */
-        free(g) ;
-        return(token_winner) ;
-    }
+    /* Inutile, sert à éviter le warning à la compilation */
     else {
         return(0) ;
     }

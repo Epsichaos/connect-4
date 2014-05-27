@@ -10,17 +10,19 @@
 #include"struct.h"
 #include"fonctions.h"
 
+/** Macro définissant la valeur max renvoyée par pond : la victoire ! */
 #define INFINI 1000
+/** Valeur minimale renvoyée par pond : valeur de grille nulle */
 #define NEUTRAL 0
+/** Nombre de colonnes */
 #define COLUMN_NB 7
+/** Nombre de lignes */
 #define LINE_NB 6
 
 /**
 *\brief Fonction pond, heuristique qui détermine la valeur d'une grille.
-*\details Cette fonction permet au main, ou a posteriori à la fonction play{} de créer une grille de jeu. Elle est relativement naïve :
-elle renvoit moins l'INFINI si elle détecte une victoire, et moins l'INFINI sur deux, si elle détecte que 3 pièces sont alignées et
-qu'il y a une place pour rajouter un jeton (que la case "suivante" est vide) (implémenté par la fonction \a winner3).
-*\return g de type grid : c'est la grille créé par create_grid.
+*\details Cette fonction permet d'évaluer la valeur d'une grille.
+*\return a de type \a int : valeur de la grille (entre 0 et -INFINI).
 */
 int pond(grid g) { 
 	if(winner(g)==1) {
@@ -148,7 +150,7 @@ int where_play(grid g,int depth,token t) {
 /**
 *\brief Fonction winner3, utilisée pour déterminer la valeur d'une grille dans \a pond.
 *\details Elle permet d'indiquer une "victoire" lorsque 3 jetons sont alignés, et que le 4ème est vide : sert à
-rendre la fonction de pondération moins naïve.
+rendre la fonction de pondération moins naïve. Elle est très semblable à \a winner.
 *\return a de type \a int valant 0 si la grille est 'non gagnante' ou 1 si elle est 'gagnante' (un booléen donc...)
 */
 int winner3(grid g) {

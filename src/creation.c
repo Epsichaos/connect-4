@@ -12,7 +12,7 @@
 #include"network-lib.h"
 
 /**
-*\brief Fonction create_keyboard, utilisée pour créer un joueur au clavier, sur la machine même
+*\brief Fonction create_keyboard, utilisée pour créer un joueur au clavier, sur la machine même.
 *\details Cette fonction permet au main de créer un joueur de type \a keyboard , qui joue sur la 
 *machine où le programme est lancé
 *\param t paramètre de type \a token (lui-même type \a enum) pouvant prendre 3 valeurs : 

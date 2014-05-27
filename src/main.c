@@ -1,8 +1,8 @@
 /**
 *\file main.c
-*\brief main(), faisant la liaison entre toutes les fonctions pour permettre le jeu.
+*\brief \a main, faisant la liaison entre toutes les fonctions pour permettre le jeu.
 *\details Ce fichier permet la gestion d'une partie, à l'aide de toutes les fonctions implémentées
-* dans les fichiers précédents.
+dans les fichiers précédents.
 */
 
 #include<stdio.h>
@@ -80,6 +80,10 @@ int main(int argc, char *argv[]) {
         <p>De multiples ouvertures sont possibles : algorithmes génétiques pour améliorer l'IA, utilisation d'une interface graphique avec GTK, ... etc.</p>
     <hr>
 <h1>Historique des modifications</h1>
+    <h2>27 Mai 2012</h2>
+        <h3>Description des modifications</h3>
+            <p>Derniers commentaires, dernières fonctions et corrections. Tests de compilation et de jeu avec Valgrind et GDB. Tout semble marcher correctement,
+            modulo l'erreur étrange que Valgrind indique, présenté le 25 Mai et commentée dans ia.c.</p>
     <h2>25 Mai 2012</h2>
         <h3>Description des modifications</h3>
             <p>Grosses modifications du code : structure séparée dans des dossiers, l'IA est désormais fonctionnelle avec l'algorithme MinMax (coupures Alpha
@@ -91,7 +95,7 @@ int main(int argc, char *argv[]) {
         <h3>Commentaires</h3>
             <p>L'IA est pour le moment encore faible, mais nous avons choisi de privilégier la propreté du code avant d'améliorer l'heuristique.</p>
             <p>Il reste une erreur détectée dans Valgrind, lorsque on utilise une IA. Il signale une erreur : "Conditional jump or move depends on uninitialised 
-            value(s)", alors que le tableau (dans pond.c) est bien initialisé. Nous n'avons pas réussi à comprendre le problème.</p>
+            value(s)", alors que le tableau (dans ia.c) est bien initialisé. Nous n'avons pas réussi à comprendre le problème.</p>
     <h2>28 Avril 2014</h2>
         <h3>Description des modifications</h3>
             <p>Finalisation complète de la partie client / serveur. Les fonctions input(), output() sont créées et play() est mise à jour. Des vérifications 
