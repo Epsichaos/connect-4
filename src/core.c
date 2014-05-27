@@ -290,9 +290,9 @@ int input(grid g, player p) {
         printf("Joueur %d, indique ton numéro de colonne :\n",p->player_token);
         fgets(nombre,LENGTH,stdin) ;
         /* Test pour savoir si le caractère est bien un chiffre entre 1 et 7*/
-        while(strlen(nombre)>2||isdigit(nombre[0])==0||nombre[0]=='0'||nombre[0]=='8'||nombre[0]=='9') {
+        while(strlen(nombre)>2||isdigit(nombre[0])==0||nombre[0]=='0'||nombre[0]=='8'||nombre[0]=='9'||g->heights[atoi(nombre)-1]==6) {
             print_grid(g) ;
-            printf("Saisie incorrecte, Joueur %d, indique ton numéro de colonne :\n",p->player_token) ;
+            printf("Saisie incorrecte (colonne pleine ou caractère non conforme), Joueur %d, indique ton numéro de colonne :\n",p->player_token) ;
             fgets(nombre,LENGTH,stdin) ;
         }
         /* On converti la chaîne de caractère en entier */
