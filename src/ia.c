@@ -132,10 +132,8 @@ int where_play(grid g,int depth,token t) {
 	}
 	int k=0 ;
 	int l=0 ;
-	/* On compte le nombre de valeurs non nulles dans le tableau. La ligne suivante est source d'erreur avec Valgrind,
-	qui nous dit 'Conditional jump or move depends on uninitialised value(s)', alors que buf est initialisé ligne 66... Nous 
-	n'avons pas réussi à trouver la source de l'erreur.  */
-	while(buf[k]!=0&&k<7) { 
+	/* On compte le nombre de valeurs non nulles dans le tableau. */
+	while(k<7&&buf[k]!=0) { 
 		l = l + 1 ;
 		k = k + 1 ;
 	}
