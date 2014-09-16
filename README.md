@@ -16,13 +16,13 @@ Different types of players are implemented :
 * type CLIENT
 * type IA
 
-When you want to play, (after using the Makefile), juste try : ./connect4.x [player1] [player2], 
+When you want to play, (after using the Makefile), juste try : `./connect4.x [player1] [player2]`, 
 where [player] is :
 
-* '-keyboard' if the type is KEYBOARD,
-* '-client -hostname -hostport' if the type is CLIENT,
-* '-server -port' if the type is SERVER,
-* '-ia -depth' if the type is IA.
+* `-keyboard` if the type is KEYBOARD,
+* `-client -hostname -hostport` if the type is CLIENT,
+* `-server -port` if the type is SERVER,
+* `-ia -depth` if the type is IA.
 
 Examples 
 ---------
